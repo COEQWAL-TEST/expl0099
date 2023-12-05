@@ -1,0 +1,14 @@
+*.dll
+*.dss
+*.dsc
+*.dsd
+*.xlsx
+*.ifs
+*.par
+*.log
+*.cols
+*.rows
+*.lp
+*.mps
+*.svar
+*.dvar
