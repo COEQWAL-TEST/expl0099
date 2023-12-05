@@ -83,11 +83,12 @@ SEQUENCE CYCLE11 {
     order   11
     } 
  
-
+/*
 SEQUENCE CYCLE12 {
     model   ITP
     order   11
     }	
+*/
  
 model block1 {
     INCLUDE '\Assumptions\Options_Switches.wresl'
