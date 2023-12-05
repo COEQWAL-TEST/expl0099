@@ -6,7 +6,11 @@ INCLUDE '\CVP_delivery_logic_system\sum_cvp_demands_system.wresl'
 INCLUDE '\CVP_delivery_logic_system\WSIandDI_CVP_system.wresl'
 !INCLUDE '\CVP_delivery_logic_system\Delivery_carryover_split_CVP_system.wresl'
 
-INCLUDE '\CVP_delivery_logic_system\CVPcut_system.wresl'
+!! jmg-ucsc: for SJ cycles, ensure initial estimates of cuts are consistent
+if int(cvp_priority_alt)==1 {
+	INCLUDE '\CVP_delivery_logic_system\CVPcut_system_alt.wresl'}
+elseif int(cvp_priority_alt)==0 {
+	INCLUDE '\CVP_delivery_logic_system\CVPcut_system.wresl'}
 
 
 

@@ -268,7 +268,8 @@ define deltar_cvps1dv {alias del_first_cvp_s kind 'DEL-TARGET' units 'TAF'}
 
 ! Moved this logic from delcar_cvp_sys.wresl because Stage 1 transfers should not increase NOD allocations LGB
 
-define del_second_cvp_s {value min(del_first_cvp_s , acvpdem_total_s)} ! Added logic to include Stage 1 Transfers in the delivery target LGB
+!define del_second_cvp_s {value min(del_first_cvp_s , acvpdem_total_s)} ! Added logic to include Stage 1 Transfers in the delivery target LGB
+define del_second_cvp_s {value min(del_first_cvp_s , acvpdem_total_s, acvpdem_tot_udef_s)} !jmg-ucsc: including user-defined SOD CVP demand reductions
 
 define deltar_cvps2dv {alias del_second_cvp_s kind 'DEL-TARGET' units 'TAF'}
 
@@ -286,6 +287,6 @@ define del_third_cvp_s {
     value max(deltar_cvp_sdv(-1), del_second_cvp_s) }
 }
 
-define deltar_cvp_s {value min(del_third_cvp_s, acvpdem_total_s) }
+define deltar_cvp_s {value min(del_third_cvp_s, acvpdem_total_s, acvpdem_total_s, acvpdem_tot_udef_s) } !jmg-ucsc: including user-defined SOD CVP demand reductions
 
 goal save_deltar_cvp_s {deltar_cvp_sdv = deltar_cvp_s}

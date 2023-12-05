@@ -14,9 +14,9 @@ in the Calsim network (D172, D174, D178).
 
 /* DSA 58 (Sacramento River above Red Bluff) */
 ! Define the Agricultural, M&I, and Settlement Contractors Allowable Diversion limits based on contract cuts
-define ad_d104_pag {value perdel_cvpag_sys*dem_d104_pag*taf_cfs}  
-define ad_d104_pmi {value perdel_cvpmi_sys*dem_d104_pmi*taf_cfs}
-define ad_d104_psc {value perdel_cvpsc_sys*dem_d104_psc*taf_cfs}
+define ad_d104_pag {value perdel_cvpag_sys*dem_d104_pag*taf_cfs*cvpag_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
+define ad_d104_pmi {value perdel_cvpmi_sys*dem_d104_pmi*taf_cfs*cvpmi_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
+define ad_d104_psc {value perdel_cvpsc_sys*dem_d104_psc*taf_cfs*cvpsc_demand_ratio}    !20231129 jmg-ucsc: adjusting for custom demand modifications
 
 ! Define demand by type based on CVP contract amounts
 define con_d104_pag {select contract from nodcvpcontract where contractor=1}
@@ -48,7 +48,7 @@ goal setL17101 {L17101 = D171 * ConvLs_17101}  !set conveyance loss
   
 define D171_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD171   {D171_pag < perdel_cvpag_sys*con_D171_pag }
+goal limitD171   {D171_pag < perdel_cvpag_sys*con_D171_pag*cvpag_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 goal limitD171_1 {D171_pag < target_D17101 + L17101}
 
 goal splitD171 {D171 = D171_pag}
@@ -58,7 +58,7 @@ goal setL17201 {L17201 = D172 * (ConvLs_17201 + ConvLs_172)}  !set conveyance lo
 
 define D172_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD172   {D172_pag < perdel_cvpag_sys*con_D172_pag}
+goal limitD172   {D172_pag < perdel_cvpag_sys*con_D172_pag*cvpag_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 goal limitD172_1 {D172_pag < target_D17201 + L17201}
 
 goal splitD172 {D172 = D172_pag}
@@ -69,7 +69,7 @@ goal setL17401 {L17401 = D174 * (ConvLs_17401 + ConvLs_172)}  !set conveyance lo
 
 define D174_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD174   {D174_pag < perdel_cvpag_sys*con_D174_pag}
+goal limitD174   {D174_pag < perdel_cvpag_sys*con_D174_pag*cvpag_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 goal limitD174_1 {D174_pag < target_D17401 + L17401}
 
 goal splitD174 {D174 = D174_pag}
@@ -79,7 +79,7 @@ goal setL17801 {L17801 = D178 * (ConvLs_17801 + ConvLs_172)}  !set conveyance lo
 
 define D178_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD178   {D178_pag < perdel_cvpag_sys*con_D178_pag}
+goal limitD178   {D178_pag < perdel_cvpag_sys*con_D178_pag*cvpag_demand_ratio_n}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 goal limitD178_1 {D178_pag < target_D17801 + L17801}
 
 goal splitD178 {D178 = D178_pag}

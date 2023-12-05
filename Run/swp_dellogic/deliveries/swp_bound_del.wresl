@@ -14,20 +14,20 @@ the SWP PDR (Project Diversion Requirement?)
 !First define the Allocated Diversion limits based on contract cuts
 define ad_d6_pwr    {value dem_d6_pwr*taf_cfs}
 define ad_d7a_pwr   {value dem_d7a_pwr*taf_cfs}
-define ad_d7a_pag   {value perdel_swp_fsc*dem_d7a_pag*taf_cfs}
+define ad_d7a_pag   {value perdel_swp_fsc*dem_d7a_pag*taf_cfs*SWP_Ag_Ratio} !jmg-ucsc: adjusting FSC demands along 
 !(DJE) d7a_prf supplements water to Butte Sink DC (C221) and is subject to SWP allocation schedule.
 !define ad_d7a_prf   {value perdel_swp_ag1*dem_C221_prf*taf_cfs}
 define ad_d7a_prf   {value swp_perdel_butt*dem_C221_prf*taf_cfs}
 define ad_d7b_pwr   {value dem_d7b_pwr*taf_cfs}
-define ad_d7b_pag   {value perdel_swp_fsc*dem_d7b_pag*taf_cfs}
+define ad_d7b_pag   {value perdel_swp_fsc*dem_d7b_pag*taf_cfs*SWP_Ag_Ratio} !jmg-ucsc: adjusting FSC demands along with SWP SOD Ag 
 !(DJE) d7b_prf provides water to Gray Lodge Refuge (C216b) and is subject to SWP allocation schedule.
 !define ad_d7b_prf   {value perdel_swp_ag1*dem_C216b_prf*taf_cfs}
 define ad_d7b_prf   {value swp_perdel_butt*dem_C216b_prf*taf_cfs}
-define ad_d206a_pag {value perdel_swp_fsc*dem_d206a_pag*taf_cfs}
+define ad_d206a_pag {value perdel_swp_fsc*dem_d206a_pag*taf_cfs*SWP_Ag_Ratio} !jmg-ucsc: adjusting FSC demands along with SWP SOD Ag 
 define ad_d206b_pwr {value dem_d206b_pwr*taf_cfs}
-define ad_d206b_pag {value perdel_swp_fsc*dem_d206b_pag*taf_cfs}
+define ad_d206b_pag {value perdel_swp_fsc*dem_d206b_pag*taf_cfs*SWP_Ag_Ratio} !jmg-ucsc: adjusting FSC demands along with SWP SOD Ag 
 define ad_d206c_pwr {value dem_d206c_pwr*taf_cfs}
-define ad_d206c_pag {value perdel_swp_fsc*dem_d206c_pag*taf_cfs}
+define ad_d206c_pag {value perdel_swp_fsc*dem_d206c_pag*taf_cfs*SWP_Ag_Ratio} !jmg-ucsc: adjusting FSC demands along with SWP SOD Ag 
 define ad_d202_pwr  {value dem_d202_pwr*taf_cfs}
 
 !(DJE) Need to define allocated diversion limits for d201 and d204.

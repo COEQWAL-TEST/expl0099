@@ -17,8 +17,8 @@ goal set_d163_prj  {d163_prj  < dem_d163_prj*taf_cfs}  ! Settlement Demand
 goal set_d165_prj  {d165_prj  < dem_d165_prj*taf_cfs } ! Settlement Demand
 
 ! Define the Settlement Contractors Allowable Diversion limits based on contract cuts
-define ad_d163_psc {value perdel_cvpsc_sys*dem_d163_psc*taf_cfs}
-define ad_d165_psc {value perdel_cvpsc_sys*dem_d165_psc*taf_cfs}
+define ad_d163_psc {value perdel_cvpsc_sys*dem_d163_psc*taf_cfs*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications}
+define ad_d165_psc {value perdel_cvpsc_sys*dem_d165_psc*taf_cfs*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 
 ! Define demands based on CVP contract amounts
 define con_d163_psc {select contract from nodcvpcontract where contractor=13}

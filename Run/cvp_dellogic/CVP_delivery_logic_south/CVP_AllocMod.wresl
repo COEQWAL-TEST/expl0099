@@ -60,10 +60,10 @@ define Summer_SOD_WS_dry {
 define CVPSODDemThruAug {
     case JunJulAug {
         condition month>=MAY .and. month<=AUG
-        sum(i=0,AUG-month,1) perdel_cvpag_s_base*dem_totcvps_pag(i)
-                            +perdel_cvpmi_s_base*dem_totcvps_pmi(i)
-                            +perdel_cvpex_s_base*dem_totcvps_pex(i)
-                            +perdel_cvprf_s_base*dem_totcvps_prf(i)
+        sum(i=0,AUG-month,1) perdel_cvpag_s_base*dem_totcvps_pag(i)*CVP_pag_ratio_s
+                            +perdel_cvpmi_s_base*dem_totcvps_pmi(i)*CVP_pmi_ratio_s
+                            +perdel_cvpex_s_base*dem_totcvps_pex(i)*cvpex_demand_ratio
+                            +perdel_cvprf_s_base*dem_totcvps_prf(i)*CVP_prf_ratio_s
                             +dem_totcvps_pls(i)}
     case otherwise {
         condition always
@@ -101,6 +101,61 @@ goal set_cvp_perdel_incAg_ {cvp_perdel_incAg_ = cvp_perdel_incAg}
 
         
 
+! determine what the incremental adjustment is if extra is distributed equally
+! across all contract types
+! jmg-ucsc
+define CVPSODAgDemThruAug {
+    case JunJulAug {
+        condition month>=MAY .and. month<=AUG
+        sum(i=0,AUG-month,1) perdel_cvpag_s_base*dem_totcvps_pag(i)*CVP_pag_ratio_s
+}
+    case otherwise {
+        condition always
+        value 0.}
+}
 
+define MaxCVPAgInc_Amount {value MaxCVPAgInc*CVPSODAgDemThruAug}
+define incAg_amount_eqdist {value min(MaxCVPAgInc_Amount, SODExtra*cvpag_s_fraction)}
 
+define MaxCVPRefInc {value 1. - perdel_cvprf_s_base }
+define CVPSODRefDemThruAug {
+    case JunJulAug {
+        condition month>=MAY .and. month<=AUG
+        sum(i=0,AUG-month,1) perdel_cvprf_s_base*dem_totcvps_prf(i)*CVP_prf_ratio_s
+}
+    case otherwise {
+        condition always
+        value 0.}
+}
+
+define MaxCVPRefInc_Amount {value MaxCVPRefInc*CVPSODRefDemThruAug}
+define incRef_amount_eqdist {value min(MaxCVPRefInc_Amount, SODExtra*cvprf_s_fraction)}
+
+define MaxCVPExcInc {value 1. - perdel_cvpex_s_base }
+define CVPSODExcDemThruAug {
+    case JunJulAug {
+        condition month>=MAY .and. month<=AUG
+        sum(i=0,AUG-month,1) perdel_cvpex_s_base*dem_totcvps_pex(i)*cvpex_demand_ratio
+}
+    case otherwise {
+        condition always
+        value 0.}
+}
+
+define MaxCVPExcInc_Amount {value MaxCVPExcInc*CVPSODExcDemThruAug}
+define incExc_amount_eqdist {value min(MaxCVPExcInc_Amount, SODExtra*cvpex_s_fraction)}
+
+define MaxCVPMIInc {value 1. - perdel_cvpmi_s_base }
+define CVPSODMIDemThruAug {
+    case JunJulAug {
+        condition month>=MAY .and. month<=AUG
+        sum(i=0,AUG-month,1) perdel_cvpmi_s_base*dem_totcvps_pmi(i)*CVP_pmi_ratio_s
+}
+    case otherwise {
+        condition always
+        value 0.}
+}
+
+define MaxCVPMIInc_Amount {value MaxCVPMIInc*CVPSODMIDemThruAug}
+define incMI_amount_eqdist {value min(MaxCVPMIInc_Amount, SODExtra*cvpmi_s_fraction)}
         

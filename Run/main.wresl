@@ -26,6 +26,16 @@ initial {
 	svar CCWDIFSwitch    {value 0}
 	svar LVEM_switch	 {select Option from GUI_LosVaqueros where Index = 1}
 	svar AllocationSwitch   {select Option from GUI_Operations where Index=5} !Allocation method
+	
+	svar cvpag_demand_ratio_n {value 1.0}
+	svar cvprf_demand_ratio_n {value 1.0}
+	svar cvpsc_demand_ratio {value 1.0}
+	svar cvpex_demand_ratio {value 1.0}
+	svar cvpmi_demand_ratio_n {value 1.0}
+	
+	svar cvp_priority_alt {value 1} !<-- 0: baseline cuts priorities; 1: equal to all contracts
+	svar CVPdemandswitch   {select Option from GUI_SODdemand where Index = 5} ! {value 1} !<--: moved here from Options_Switches.wresl
+	svar CVPdemandswitchSV {value int(CVPdemandswitch)}
 }
 
 SEQUENCE CYCLE1 {

@@ -27,8 +27,9 @@ Include 'Trinity\LewistonSpill.wresl'
 !Include 'Sacramento\keswickmin.wresl'   
 Include 'Sacramento\KeswickPower.wresl' 
 Include 'Sacramento\RedBluff_bypassflow.wresl'
-Include 'Sacramento\ncp_relax.wresl' 
+!Include 'Sacramento\ncp_relax.wresl' !20231026 jmg-ucsc: replacing with unimp flow requirement
 INCLUDE 'Sacramento\setdailyadjmif.wresl'
+INCLUDE 'Sacramento\ncp_relax_and_UnimpFlow.wresl' !20231026 jmg-ucsc: unimp flow requirement that replaces ncp_relax
 
 Include 'Feather\feather_special.wresl'
 Include 'Feather\OroRuleCurv.wresl'

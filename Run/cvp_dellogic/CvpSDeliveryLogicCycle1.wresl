@@ -4,8 +4,9 @@ INCLUDE '\CVP_delivery_logic_south\delcar_cvp_south_B2BO.wresl'
 
 !! jmg-ucsc: for SJ cycles, ensure initial estimates of cuts are consistent
 if int(cvp_priority_alt)==1 {
-	INCLUDE '\CVP_delivery_logic_system\CVPcut_south_alt.wresl'}
+	INCLUDE '\CVP_delivery_logic_south\CVPcut_south_alt.wresl'}
 elseif int(cvp_priority_alt)==0 {
 	INCLUDE '\CVP_delivery_logic_south\CVPcut_south.wresl'      ! Cuts back SOD deliveries based on difference 
- 
+}
+
 INCLUDE '\CVP_delivery_logic_south\cvp_arcsplit_s_cyc1.wresl'

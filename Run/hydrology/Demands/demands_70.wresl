@@ -636,9 +636,9 @@ define perdel_pag_sysdv {alias perdel_cvpag_sys kind 'perdel-cvp-ag' units 'none
 !*******************************DSA 70 Shortage Definitions***********************************************
 !*********************************************************************************************************
 
-define ad_d162a_psc {value perdel_cvpsc_sys * dem_d162a_psc}
-define ad_d162b_psc {value perdel_cvpsc_sys * dem_d162b_psc}
-define ad_d162c_psc {value perdel_cvpsc_sys * dem_d162c_psc}
+define ad_d162a_psc {value perdel_cvpsc_sys * dem_d162a_psc*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
+define ad_d162b_psc {value perdel_cvpsc_sys * dem_d162b_psc*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
+define ad_d162c_psc {value perdel_cvpsc_sys * dem_d162c_psc*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
 define ad_d167b_pmi {value adj_d167b_pmi}
 
 !define ad_d168c_frwp_pmi {value dem_d168c_frwp_pmi*perdel_cvpmi_sys} ! Does not contribute to Diversion Requirement
@@ -732,9 +732,9 @@ define extra_d8h_np    {value extra_70_np*(ad_d8h_np/ad_sum_70_np)}
 define extra_d9a_np    {value extra_70_np*(ad_d9a_np/ad_sum_70_np)}
 */
 ! CVP contract shortages
-define short_d162a_psc {alias perdel_cvpsc_sys*dem_d162a_psc - extra_d162a_psc - d162a_psc kind 'delivery-shortage' units 'cfs'}
-define short_d162b_psc {alias perdel_cvpsc_sys*dem_d162b_psc - extra_d162b_psc - d162b_psc kind 'delivery-shortage' units 'cfs'}
-define short_d162c_psc {alias perdel_cvpsc_sys*dem_d162c_psc - extra_d162c_psc - d162c_psc kind 'delivery-shortage' units 'cfs'}
+define short_d162a_psc {alias perdel_cvpsc_sys*dem_d162a_psc*cvpsc_demand_ratio - extra_d162a_psc - d162a_psc kind 'delivery-shortage' units 'cfs'} !20231129 jmg-ucsc: adjusting for custom demand modifications
+define short_d162b_psc {alias perdel_cvpsc_sys*dem_d162b_psc*cvpsc_demand_ratio - extra_d162b_psc - d162b_psc kind 'delivery-shortage' units 'cfs'}
+define short_d162c_psc {alias perdel_cvpsc_sys*dem_d162c_psc*cvpsc_demand_ratio - extra_d162c_psc - d162c_psc kind 'delivery-shortage' units 'cfs'}
 define short_d167b_pmi {alias adj_D167b_pmi - extra_d167b_pmi - d167b_pmi kind 'delivery-shortage' units 'cfs'}
 !define short_d300_pmi  {alias adj_d300_pmi - extra_d300_pmi - d300_pmi kind 'delivery-shortage' units 'cfs'}
 define short_d8b_pmi   {alias adj_d8b_pmi - extra_d8b_pmi - d8b_pmi kind 'delivery-shortage' units 'cfs'}

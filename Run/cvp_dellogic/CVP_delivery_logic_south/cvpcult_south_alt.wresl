@@ -1,0 +1,8 @@
+! cvpcut_south_alt.wresl
+! alternative - equal cuts to CVP contract types, as percentage of demands/contracts
+
+!jmg-ucsc: perdel_s from cvpcut_south.wresl
+define perdel_s   { value min(1.0, deltar_cvp_s/(acvpdem_total_s * CVP_tot_ratio_s)) }
+
+!define perdel_sysdv {alias perdel_sys kind 'percent-delivery' units 'none'}
+define perdel_sdv {alias perdel_s kind 'percent-delivery' units 'none'}

@@ -199,9 +199,9 @@ define perdel_cvprf_s {value perdel_cvprf_s_base  }      !Percent of full delive
 !**************************************************************************
 ! Given the allocations determined above, calculate current ANNUAL deliveries
 
-define acvpdel_pag_sys { value perdel_cvpag_sys * acvpdem_pag_sys}
+define acvpdel_pag_sys { value perdel_cvpag_sys * acvpdem_pag_sys*cvpag_demand_ratio_n} !20231129 jmg-ucsc
 define acvpdel_pmi_sys { value perdel_cvpmi_sys * acvpdem_pmi_sys}
-define acvpdel_psc_sys { value perdel_cvpsc_sys * acvpdem_psc_sys}
+define acvpdel_psc_sys { value perdel_cvpsc_sys * acvpdem_psc_sys*cvpsc_demand_ratio} !20231129 jmg-ucsc
 define acvpdel_prf_sys { value perdel_cvprf_sys * acvpdem_prf_sys}
 
 define acvpdel_ag_s { value perdel_cvpag_s * acvpdem_pag_s}

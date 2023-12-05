@@ -32,6 +32,7 @@ define acvpdem_pls_sys {timeseries kind 'DEM-CVPSYS-LS-TOTAL' units 'TAF'}
 
 define acvpdem_tot_sys {timeseries kind 'DEM-CVPSYS-TOTAL' units 'TAF'}
 
+
 ! Annual diversion requirement
 define acvpdem_dr_sys {timeseries kind 'demand-annual' units 'taf'}
 
@@ -60,9 +61,17 @@ define CVP_tot_ratio_s {case user_defined  {condition CVPdemandswitch == 2 value
 define acvpdem_tot_s_red {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_total_s - acvpdem_tot_udef_s}
                           case full_contract {condition always value 0.}}
 
-define acvpdem_pag_udef_sys {value acvpdem_pag_sys - (acvpdem_pag_s - acvpdem_pag_udef_s)}
-define acvpdem_pmi_udef_sys {value acvpdem_pmi_sys - (acvpdem_pmi_s - acvpdem_pmi_udef_s)}
-define acvpdem_prf_udef_sys {value acvpdem_prf_sys - (acvpdem_prf_s - acvpdem_prf_udef_s)}
+! first calculate the udef demands sys demands based on changes SOD
+define acvpdem_pag_udef_sys1 {value acvpdem_pag_sys - (acvpdem_pag_s - acvpdem_pag_udef_s)}
+define acvpdem_pmi_udef_sys1 {value acvpdem_pmi_sys - (acvpdem_pmi_s - acvpdem_pmi_udef_s)}
+define acvpdem_prf_udef_sys1 {value acvpdem_prf_sys - (acvpdem_prf_s - acvpdem_prf_udef_s)}
+
+! then adjust again for NOD modifications of demands
+define acvpdem_pag_udef_sys {value acvpdem_pag_udef_sys1 * cvpag_demand_ratio_n}
+define acvpdem_pmi_udef_sys {value acvpdem_pmi_udef_sys1 * cvpmi_demand_ratio_n}
+define acvpdem_prf_udef_sys {value acvpdem_prf_udef_sys1 * cvprf_demand_ratio_n}
+define acvpdem_psc_udef_sys {value acvpdem_psc_sys * cvpsc_demand_ratio}
+define acvpdem_pex_udef_sys {value acvpdem_pex_sys * cvpex_demand_ratio}
 
 define CVP_pag_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_pag_udef_sys / acvpdem_pag_sys}
                           case full_contract {condition always value 1.}}
@@ -71,7 +80,7 @@ define CVP_pmi_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 val
 define CVP_prf_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_prf_udef_sys / acvpdem_prf_sys}
                           case full_contract {condition always value 1.}}
 
-define acvpdem_tot_udef_sys {value acvpdem_pag_udef_sys + acvpdem_pmi_udef_sys + acvpdem_prf_udef_sys + acvpdem_pex_sys + acvpdem_psc_sys + acvpdem_pls_sys}
+define acvpdem_tot_udef_sys {value acvpdem_pag_udef_sys + acvpdem_pmi_udef_sys + acvpdem_prf_udef_sys + acvpdem_pex_udef_sys + acvpdem_psc_udef_sys + acvpdem_pls_sys}
 
 define CVP_tot_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_tot_udef_sys / acvpdem_tot_sys}
                           case full_contract {condition always value 1.}}

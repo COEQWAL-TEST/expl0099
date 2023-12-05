@@ -1,0 +1,233 @@
+! cvpcut_south_alt.wresl
+! alternative - equal cuts to CVP contract types, as percentage of demands/contracts
+
+define acvpdem_pex_udef_s {value acvpdem_pex_sys * cvpex_demand_ratio}
+
+!jmg-ucsc: perdel_s from cvpcut_south.wresl
+define perdel_s   { value min(1.0, deltar_cvp_s/(acvpdem_total_s * CVP_tot_ratio_s)) }
+
+!define perdel_sysdv {alias perdel_sys kind 'percent-delivery' units 'none'}
+define perdel_sdv {alias perdel_s kind 'percent-delivery' units 'none'}
+
+! deltar_cvp_s    Forecast CVP delivery - Input from CVP delivery logic
+! With addition of user-defined demands, demands could be less than delivery target, so cutback has to have a min of 0
+define cut_delivery_s {value max(0.0,(acvpdem_total_s * CVP_tot_ratio_s) - deltar_cvp_s)}      !Total required cuts
+define cut_delivery_sdv {alias cut_delivery_s kind 'delivery-cut' units 'TAF'}
+
+! Alternative 1: Equal cuts
+! in the case of a shortfall, assign cuts in equal priority to all CVP contractor types, in proportion to
+! total demand for the contractor category
+if CVPdemandSwitchSV == 2 {
+	define cvpag_s_fraction {value acvpdem_pag_udef_s/(acvpdem_tot_udef_s-acvpdem_pls_s)}
+	define cvprf_s_fraction {value acvpdem_prf_udef_s/(acvpdem_tot_udef_s-acvpdem_pls_s)}
+	define cvpex_s_fraction {value acvpdem_pex_udef_s/(acvpdem_tot_udef_s-acvpdem_pls_s)}
+	define cvpmi_s_fraction {value acvpdem_pmi_udef_s/(acvpdem_tot_udef_s-acvpdem_pls_s)}
+} elseif CVPdemandSwitchSV == 1 {
+	define cvpag_s_fraction {value acvpdem_pag_s/(acvpdem_total_s-acvpdem_pls_s)}
+	define cvprf_s_fraction {value acvpdem_prf_s/(acvpdem_total_s-acvpdem_pls_s)}
+	define cvpex_s_fraction {value acvpdem_pex_s/(acvpdem_total_s-acvpdem_pls_s)}
+	define cvpmi_s_fraction {value acvpdem_pmi_s/(acvpdem_total_s-acvpdem_pls_s)}
+}
+
+define cvpag_s_cut {value cut_delivery_s * cvpag_s_fraction}
+define cvprf_s_cut {value cut_delivery_s * cvprf_s_fraction}
+define cvpex_s_cut {value cut_delivery_s * cvpex_s_fraction}
+define cvpmi_s_cut {value cut_delivery_s * cvpmi_s_fraction}
+
+if CVPdemandSwitchSV == 2 {
+	define cvpag_s_deltar {value acvpdem_pag_udef_s - cvpag_s_cut}
+	define cvprf_s_deltar {value acvpdem_prf_udef_s - cvprf_s_cut}
+	define cvpex_s_deltar {value acvpdem_pex_udef_s - cvpex_s_cut}
+	define cvpmi_s_deltar {value acvpdem_pmi_udef_s - cvpmi_s_cut}
+} elseif CVPdemandSwitchSV==1 {
+	define cvpag_s_deltar {value acvpdem_pag_s - cvpag_s_cut}
+	define cvprf_s_deltar {value acvpdem_prf_s - cvprf_s_cut}
+	define cvpex_s_deltar {value acvpdem_pex_s - cvpex_s_cut}
+	define cvpmi_s_deltar {value acvpdem_pmi_s - cvpmi_s_cut}
+}
+
+define perdel_cvpex_s_base { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==2
+        value cvpex_s_deltar/acvpdem_pex_udef_s}
+    case MarMayU {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==1
+        value cvpex_s_deltar/acvpdem_pex_s}
+    case otherwise {
+        condition always
+        value perdv_cvpex_s(-1) }
+} 
+
+define perdel_cvpag_s_base1 { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==2
+        value cvpag_s_deltar/acvpdem_pag_udef_s}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==1
+        value cvpag_s_deltar/acvpdem_pag_s}
+    case otherwise {
+        condition always
+        value perdv_cvpag_s(-1) }
+} 
+
+define perdel_cvprf_s_base { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==2
+        value cvprf_s_deltar/acvpdem_prf_udef_s}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==1
+        value cvprf_s_deltar/acvpdem_prf_s}
+    case otherwise {
+        condition always
+        value perdv_cvprf_s(-1) }
+} 
+
+define perdel_cvpmi_s_base { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==2
+        value cvpmi_s_deltar/acvpdem_pmi_udef_s}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandSwitch==1
+        value cvpmi_s_deltar/acvpdem_pmi_s}
+    case otherwise {
+        condition always
+        value perdv_cvpmi_s(-1) }
+} 
+
+
+define perdel_cvpag_s1_dv {std kind 'percent-delivery' units 'none'}
+define perdel_cvpag_s_base_dv {std kind 'percent-delivery' units 'none'}
+
+! initial allocation based on cut logic
+define perdel_cvpag_s1 { value 1 - cvpag_s_cut/(acvpdem_pag_s*CVP_pag_ratio_s) }      !Percent of full or modified delivery for AG
+
+! Logic added to consider Stage 1 transfer contribution to SOD Allocation 
+define dltar_pag_s_Stg1 {value perdel_cvpag_sys*(acvpdem_pag_s*CVP_pag_ratio_s) } ! Split CVP_Targ into ag and m&i by ratio of annual CVP SOD demands 
+define dltar_pmi_s_Stg1 {value perdel_cvpmi_sys*(acvpdem_pmi_s*CVP_pmi_ratio_s) }
+define pdl_pag_sys_Stg1 {value dltar_pag_s_Stg1/(acvpdem_pag_s*CVP_pag_ratio_s)}
+define pdl_pmi_sys_Stg1 {value dltar_pmi_s_Stg1/(acvpdem_pmi_s*CVP_pmi_ratio_s)}
+
+! "base" allocations can limit SOD to NOD allocation
+define perdel_cvpag_s_base {value min(perdel_cvpag_s1, pdl_pag_sys_Stg1)}      !Percent of full delivery for AG considering Stage 1 Transfers 
+/*
+define perdel_cvpmi_s_base {      !Percent of full delivery for MI considering Stage 1 Transfers 
+    case Cut1 {
+        condition    perdel_cvpag_s_base > 0.75
+        value        1.0}
+    case Cut2 {
+        condition    perdel_cvpag_s_base > 0.50
+        value        0.75 + perdel_cvpag_s_base - 0.50}
+    case Cut3 {
+        condition    perdel_cvpag_s_base > 0.25
+        value        0.75    }
+    case otherwise {
+        condition    always
+        value        0.5 + perdel_cvpag_s_base}
+}
+*/
+!define perdel_cvpmi_s_base { value perdel_cvpag_s_base} ! jmg-ucsc: setting mi same as ag
+
+
+!define perdel_cvpex_s_base { value 1 - cut_pex_s/acvpdem_pex_s }      !Percent of full delivery for Exchange
+!define perdel_cvprf_s_base { value 1 - cut_prf_s/acvpdem_prf_s }      !Percent of full delivery for REF
+
+
+! assess CVPSL conditions to determine if an increase in allocation is warranted
+include 'cvp_allocmod.wresl' 
+
+! with adjustments from cvp_allocmod.wresl (extra that could be delivered from San luis in the summer)
+! set the final SOD CVP allocations
+
+define perdel_cvpag_s {  !Percent of full delivery for AG considering Stage 1 Transfers 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value perdel_cvpag_s_base + incAg_amount_eqdist/(acvpdem_pag_s*CVP_pag_ratio_s) }  
+    case March {
+        condition month==MAR
+        value perdel_cvpag_s_base + incAg_amount_eqdist/(acvpdem_pag_s*CVP_pag_ratio_s)  }  
+    case otherwise {
+        condition always
+        value max(perdv_cvpag_s(-1), perdel_cvpag_s_base +  incAg_amount_eqdist/(acvpdem_pag_s*CVP_pag_ratio_s)) }
+}
+
+define perdel_cvpmi_s { !Percent of full delivery for MI
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value perdel_cvpmi_s_base + incMI_amount_eqdist/(acvpdem_pmi_s*CVP_pmi_ratio_s) }  
+    case March {
+        condition month==MAR
+        value perdel_cvpmi_s_base + incMI_amount_eqdist/(acvpdem_pmi_s*CVP_pmi_ratio_s)  }  
+    case otherwise {
+        condition always
+        value max(perdv_cvpmi_s(-1), perdel_cvpmi_s_base + incMI_amount_eqdist/(acvpdem_pmi_s*CVP_pmi_ratio_s)) }
+}
+
+define perdel_cvpex_s { !Percent of full delivery for MI
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value perdel_cvpex_s_base + incEXC_amount_eqdist/(acvpdem_pex_s*cvpex_demand_ratio) }  
+    case March {
+        condition month==MAR
+        value perdel_cvpex_s_base + incEXC_amount_eqdist/(acvpdem_pex_s*cvpex_demand_ratio) }  
+    case otherwise {
+        condition always
+        value max(perdv_cvpex_s(-1), perdel_cvpex_s_base + incEXC_amount_eqdist/(acvpdem_pex_s*cvpex_demand_ratio)) }
+}
+
+define perdel_cvprf_s { !Percent of full delivery for MI
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value perdel_cvprf_s_base + incREF_amount_eqdist/(acvpdem_prf_s*CVP_prf_ratio_s) }  
+    case March {
+        condition month==MAR
+        value perdel_cvprf_s_base + incREF_amount_eqdist/(acvpdem_prf_s*CVP_prf_ratio_s) }  
+    case otherwise {
+        condition always
+        value max(perdv_cvprf_s(-1), perdel_cvprf_s_base + incREF_amount_eqdist/(acvpdem_prf_s*CVP_prf_ratio_s)) }
+}
+
+
+! Given the allocations determined above, calculate current ANNUAL deliveries
+
+define acvpdel_pag_sys { value perdel_cvpag_sys * acvpdem_pag_sys*cvpag_demand_ratio_n} !20231129 jmg-ucsc
+define acvpdel_pmi_sys { value perdel_cvpmi_sys * acvpdem_pmi_sys*cvpmi_demand_ratio_n}
+define acvpdel_psc_sys { value perdel_cvpsc_sys * acvpdem_psc_sys*cvpsc_demand_ratio} !20231129 jmg-ucsc
+define acvpdel_prf_sys { value perdel_cvprf_sys * acvpdem_prf_sys*cvprf_demand_ratio_n}
+
+define acvpdel_ag_s { value perdel_cvpag_s * acvpdem_pag_s * CVP_pag_ratio_s}
+define acvpdel_mi_s { value perdel_cvpmi_s * acvpdem_pmi_s * CVP_pmi_ratio_s}
+define acvpdel_ex_s { value perdel_cvpex_s * acvpdem_pex_s * cvpex_demand_ratio}
+define acvpdel_rf_s { value perdel_cvprf_s * acvpdem_prf_s * CVP_prf_ratio_s}
+define acvpdel_tot_s { value acvpdel_ag_s + acvpdel_mi_s + acvpdel_ex_s + acvpdel_rf_s + acvpdem_pls_s }
+
+!**************************************************************************
+! Final Percent Delivery for output
+goal set_perdv_cvpag_sys { perdv_cvpag_sys =  perdel_cvpag_sys }
+goal set_perdv_cvpmi_sys { perdv_cvpmi_sys =  perdel_cvpmi_sys }
+goal set_perdv_cvpsc_sys { perdv_cvpsc_sys =  perdel_cvpsc_sys }
+goal set_perdv_cvprf_sys { perdv_cvprf_sys =  perdel_cvprf_sys }
+
+goal set_perdv_cvpag_s { perdv_cvpag_s =  perdel_cvpag_s }
+goal set_perdv_cvpmi_s { perdv_cvpmi_s =  perdel_cvpmi_s }
+goal set_perdv_cvpex_s { perdv_cvpex_s =  perdel_cvpex_s }
+goal set_perdv_cvprf_s { perdv_cvprf_s =  perdel_cvprf_s }
+
+goal set_perdel_cvpag_s1_dv {perdel_cvpag_s1_dv = perdel_cvpag_s1}
+goal set_perdel_cvpag_s_base_dv {perdel_cvpag_s_base_dv = perdel_cvpag_s_base}
+
+!define perdv_cvpag_s { alias  perdel_cvpag_s kind 'percent-delivery' units 'none'}
+!define perdv_cvpmi_s { alias  perdel_cvpmi_s kind 'percent-delivery' units 'none'}
+!define perdv_cvpex_s { alias  perdel_cvpex_s kind 'percent-delivery' units 'none'}
+!define perdv_cvprf_s { alias  perdel_cvprf_s kind 'percent-delivery' units 'none'}

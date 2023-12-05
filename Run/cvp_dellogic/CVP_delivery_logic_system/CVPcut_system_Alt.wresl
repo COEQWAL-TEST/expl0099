@@ -1,0 +1,166 @@
+/***** CVP cuts reflecting alternative priority structures
+
+
+**********************************************************/
+
+define cvp_estreq_relvol {
+	case febthruoct {
+		condition month == FEB
+		value 3000. ! very rough guess, in TAF
+		}
+	case marthruoct {
+		condition month== MAR
+		value 2500. ! very rough guess, in TAF
+		}
+	case aprthruoct {
+		condition month==APR
+		value 2000. 
+		}
+	case maythruoct {
+		condition month == MAY
+		value 1500.
+		}
+	case otherwise {
+		condition always
+		value 1000.
+		}	
+}
+
+!define avail_cvp_supply {value WSI_CVP_SYS - cvp_estreq_relvol - acvpdem_pls_sys} !<-- remove losses - assume they are always "met" and so should be removed from the supply
+
+define avail_cvp_supply {
+    case MarToMay {
+           condition  month >= MAR .and. month <= MAY 
+           select     avail
+           from       cvp_avail_lookup
+           given      wsi = WSI_CVP_SYS
+           use        linear }      
+                               
+    case JunToFeb { 
+           condition  always 
+           value      0 }                  
+              }
+
+define avail_cvp_supply_dv {alias avail_cvp_supply kind 'water-supply-index' units 'TAF'}
+
+! how much is the shortfall, if any, between the demands and available cvp supply?
+define cvp_supply_shortfall {case user_defind {condition CVPdemandswitch == 2 value max(acvpdem_tot_udef_sys - avail_cvp_supply, 0.0)} !<-- value >0 indicates a shortfall, 0 indicates sufficient supply 
+							case full_contract {condition always value max(acvpdem_tot_sys - avail_cvp_supply, 0.0)}}
+
+! Alternative 1: Equal cuts
+! in the case of a shortfall, assign cuts in equal priority to all CVP contractor types, in proportion to
+! total demand for the contractor category
+define cvpsc_fraction {case  user_defined {condition CVPdemandswitch == 2 value acvpdem_psc_udef_sys/(acvpdem_tot_udef_sys-acvpdem_pls_sys)}
+					  case full_contract {condition always value acvpdem_psc_sys/(acvpdem_tot_sys-acvpdem_pls_sys)} }	
+					  
+define cvpag_fraction {case  user_defined {condition CVPdemandswitch == 2 value acvpdem_pag_udef_sys/(acvpdem_tot_udef_sys-acvpdem_pls_sys)}
+						case full_contract {condition always value acvpdem_pag_sys/(acvpdem_tot_sys - acvpdem_pls_sys)}}
+						
+define cvprf_fraction {case  user_defined {condition CVPdemandswitch == 2 value acvpdem_prf_udef_sys/(acvpdem_tot_udef_sys-acvpdem_pls_sys)}
+					   case full_contract {condition always value acvpdem_prf_sys/(acvpdem_tot_sys - acvpdem_pls_sys)}}
+					   
+!moved to cvpcut_south_alt -->> define cvpex_fraction {value acvpdem_pex_udef_sys/(acvpdem_tot_udef_sys-acvpdem_pls_sys)}
+define cvpmi_fraction {case  user_defined {condition CVPdemandswitch == 2 value acvpdem_pmi_udef_sys/(acvpdem_tot_udef_sys-acvpdem_pls_sys)}
+					   case full_contract {condition always value acvpdem_pmi_sys/(acvpdem_tot_sys - acvpdem_pls_sys)}}
+!define cvpls_fraction {value acvpdem_pls_sys/acvpdem_tot_udef_sys}
+
+define cvpsc_cut {value cvp_supply_shortfall * cvpsc_fraction}
+define cvpag_cut {value cvp_supply_shortfall * cvpag_fraction}
+define cvprf_cut {value cvp_supply_shortfall * cvprf_fraction}
+define cvpex_cut {value cvp_supply_shortfall * cvprf_fraction}
+define cvpmi_cut {value cvp_supply_shortfall * cvpmi_fraction}
+
+if CVPdemandswitchSV == 2 {
+	define cvpsc_deltar {value acvpdem_psc_udef_sys - cvpsc_cut}
+	define cvpag_deltar {value acvpdem_pag_udef_sys - cvpag_cut}
+	define cvprf_deltar {value acvpdem_prf_udef_sys - cvprf_cut}
+	define cvpex_deltar {value acvpdem_pex_udef_sys - cvpex_cut}
+	define cvpmi_deltar {value acvpdem_pmi_udef_sys - cvpmi_cut}
+} elseif CVPdemandswitchSV == 1 {
+	define cvpsc_deltar {value acvpdem_psc_sys - cvpsc_cut}
+	define cvpag_deltar {value acvpdem_pag_sys - cvpag_cut}
+	define cvprf_deltar {value acvpdem_prf_sys - cvprf_cut}
+	define cvpex_deltar {value acvpdem_pex_sys - cvpex_cut}
+	define cvpmi_deltar {value acvpdem_pmi_sys - cvpmi_cut}
+}
+
+define perdel_cvpsc_sys { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY  .and. CVPdemandswitch==2
+        value cvpsc_deltar/acvpdem_psc_udef_sys}
+    case MarMay{
+        condition month>=MAR .and. month<=MAY  .and. CVPdemandswitch==1
+        value cvpsc_deltar/acvpdem_psc_sys}
+    case otherwise {
+        condition always
+        value perdv_cvpsc_sys(-1) }
+} 
+
+define perdel_cvpex_sys { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==2
+        value cvpex_deltar/acvpdem_pex_udef_sys}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==1
+        value cvpex_deltar/acvpdem_pex_sys}
+    case otherwise {
+        condition always
+        value perdv_cvpex_sys(-1) }
+} 
+
+define perdel_cvpag_sys { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==2
+        value cvpag_deltar/acvpdem_pag_udef_sys}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==1
+        value cvpag_deltar/acvpdem_pag_sys}
+    case otherwise {
+        condition always
+        value perdv_cvpag_sys(-1) }
+} 
+
+define perdel_cvprf_sys { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==2
+        value cvprf_deltar/acvpdem_prf_udef_sys}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==1
+        value cvprf_deltar/acvpdem_prf_sys}
+    case otherwise {
+        condition always
+        value perdv_cvprf_sys(-1) }
+} 
+
+define perdel_cvpmi_sys { 
+    case firstmonth {
+        condition month==OCT .and. wateryear==1922
+        value 1.0}
+    case MarMayUDEF {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==2
+        value cvpmi_deltar/acvpdem_pmi_udef_sys}
+    case MarMay {
+        condition month>=MAR .and. month<=MAY .and. CVPdemandswitch==1
+        value cvpmi_deltar/acvpdem_pmi_sys}
+    case otherwise {
+        condition always
+        value perdv_cvpmi_sys(-1) }
+} 
+
+define perdv_cvpag_sys { alias  perdel_cvpag_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpmi_sys { alias  perdel_cvpmi_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpex_sys { alias  perdel_cvpex_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpsc_sys { alias  perdel_cvpsc_sys kind 'percent-delivery' units 'none'}
+define perdv_cvprf_sys { alias  perdel_cvprf_sys kind 'percent-delivery' units 'none'}

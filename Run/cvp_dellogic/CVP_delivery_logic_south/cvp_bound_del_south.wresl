@@ -32,9 +32,9 @@ goal s_reduce_D711_pmi {D711_pmi < perdel_cvpmi_s*CVP_pmi_ratio_s*dem_D711_pmi*t
 goal s_reduce_D844_pmi {D844_pmi < perdel_cvpmi_s*CVP_pmi_ratio_s*dem_D844_pmi*taf_cfs}
 
 !  Exchange Demands   Reduce demands from maximum to reflect cut back
-goal s_reduce_D707_pex {D707_pex < perdel_cvpex_s*dem_D707_pex*taf_cfs}
-goal s_reduce_D_MDOTAB_pex {D_MDOTAB_pex < perdel_cvpex_s*dem_D_MDOTAB_pex*taf_cfs}
-goal s_reduce_D608B_pex {D608B_pex < perdel_cvpex_s*dem_D608B_pex*taf_cfs}
+goal s_reduce_D707_pex {D707_pex < perdel_cvpex_s*CVPex_demand_ratio*dem_D707_pex*taf_cfs} !jmg-ucsc
+goal s_reduce_D_MDOTAB_pex {D_MDOTAB_pex < perdel_cvpex_s*CVPex_demand_ratio*dem_D_MDOTAB_pex*taf_cfs} !jmg-ucsc
+goal s_reduce_D608B_pex {D608B_pex < perdel_cvpex_s*CVPex_demand_ratio*dem_D608B_pex*taf_cfs} !jmg-ucsc
 
 !  Refuge Demands   Reduce demands from maximum to reflect cut back
 goal s_reduce_D708_prf {D708_prf < perdel_cvprf_s*CVP_prf_ratio_s*dem_D708_prf*taf_cfs}

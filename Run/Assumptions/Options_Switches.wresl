@@ -45,7 +45,8 @@ define SWP_ag_udef          {select Option from GUI_SODdemand  where Index = 3}
 define max_user_interrupt   {select Option from GUI_SODdemand where Index = 4}
 
 !Pull in user-defined CVP demand type, 1 = full contract, 2 = user-defined for AG, MI, and Refuge
-define CVPdemandswitch      {select Option from GUI_SODdemand where Index = 5}
+! jmg-ucsc: moved to main.wresl -->define CVPdemandswitch      {select Option from GUI_SODdemand where Index = 5}
+
 
 define acvpdem_pag_udef_s   {select Option from GUI_SODdemand where Index = 6}
 define acvpdem_pmi_udef_s   {select Option from GUI_SODdemand where Index = 7}
