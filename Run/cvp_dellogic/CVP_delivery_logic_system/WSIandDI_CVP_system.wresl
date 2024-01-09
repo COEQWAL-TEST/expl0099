@@ -14,6 +14,8 @@ DI is the sum of CVP-SYS Annual Delivery and System Carryover and is estimated f
 WSI versus DI Curve. 
 *************************************/
 
+define cvp_supply_frac {value 1.0} ! default is 1. - can be less than 1 to indicate increased carryover
+
 !Sum of CVP storages
 define WSI_CVP_Storage { std kind 'storage' units 'TAF' }
 
@@ -51,7 +53,7 @@ define DI_CVP_sysdv {alias DI_CVP_sys kind 'demand-index' units 'taf'}  */
 define WSI_CVP_nod  {
     case MarToMay {
            condition  month >= MAR .and. month <= MAY
-           value      S_Trnty(-1) + S_Shsta(-1) + S_Folsm(-1) + frcst_sac + frcst_amr  
+           value      (S_Trnty(-1) + S_Shsta(-1) + S_Folsm(-1) + frcst_sac + frcst_amr  )*cvp_supply_frac !jmg-ucsc
                }
     case JunToFeb {
            condition  always
