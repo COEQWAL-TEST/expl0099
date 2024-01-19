@@ -8,10 +8,10 @@
 <stringAttribute key="wpp.debugModel.ATTR_WPP_COMPILEONLY" value="no"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DATABASEURL" value="none"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DATATRANSFER_MS2" value=""/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_DATE" value="2023/10/19"/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_DESCRIPTION" value="38_CalLite3.0_Release_V2 - from DWR Oct 2023"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_DATE" value="2023/12/05"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_DESCRIPTION" value="COEQWAL exploratory modeling base - derived from 38_CalLite3.0_Release_V2 - from DWR Oct 2023"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DSSENDOUTPUT" value="yes"/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR" value="\DSS\CalLite2019Plus_V2jmg_BL.dss"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR" value="\DSS\cl_coeqwal_exp01_base.dss"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR_MS2" value=""/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_ENDDAY" value="30"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_ENDMONTH" value="sep"/>
@@ -48,8 +48,8 @@
 <stringAttribute key="wpp.debugModel.ATTR_WPP_STARTDAY" value="31"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_STARTMONTH" value="oct"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_STARTYEAR" value="1921"/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_STUDY" value="callite3_dwr_v2"/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_SVAR" value="\DSS\CLInputs.dss"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_STUDY" value="cl_coeqwal_exp01_base"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_SVAR" value="\DSS\CLInputs_wUnimp.dss"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_SVAR_MS2" value=""/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_SVFPART" value="2020D09E"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_SVFPART_MS2" value=""/>
