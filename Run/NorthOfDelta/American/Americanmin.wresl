@@ -26,7 +26,29 @@ define minflow_C_HSt {select HStMin
     where  month=month, AmerD893=wyt_AMERd893_cvp
 }
 
-goal HSt_min {C_HSt_MIF < minflow_C_HSt}
+! original minflow requirement vvvvv
+!goal HSt_min {C_HSt_MIF < minflow_C_HSt}
+
+! COEQWAL: implementing uinmpaired minflow requirement, with options
+define UNIMP_FOLS_CFS {value UNIMP_FOLS * taf_cfs}
+
+define minflowUnimp_C_Hst {value UNIMP_FOLS_CFS * amer_unimp_fraction}
+
+goal set_totminHst {
+	lhs C_HSt_MIF
+	case just_bl {  !< -- baseline Hst minflow reqt
+		condition amer_mif_option < 0.5
+		rhs minflow_C_HSt }
+	case just_unimp {  !<-- unipaired flow minflow reqt only
+		condition amer_mif_option < 1.5
+		rhs minflowUnimp_C_Hst }
+	case unimp_and_bl {
+		condition amer_mif_option < 2.5
+		rhs max(UNIMP_FOLS_CFS * amer_unimp_fraction, minflow_C_HSt) }
+	case otherwise {
+		condition always
+		rhs minflow_C_HSt	}
+}
 
 goal setHSttoMin {
     lhs C_HSt_EXC

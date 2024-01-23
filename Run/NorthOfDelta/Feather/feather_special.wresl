@@ -124,9 +124,43 @@ goal meetC_Therm_Minflow {C_Therm_MIF < max(minflow_C_Therm, minflow_c_YubFea)}
 ! for CalLite Simulations, see details at end of this file. 
 !=========================================================================
 
-define minflowFeaMouth {timeseries kind 'FLOW-MIN-REQUIRED' units 'CFS'} !Mouth of Feather River  (232)
-goal MouthMinFlow {C_YubFea_MIF < minflowFeaMouth}
+! COEQWAL - adding Yuba and Feather (at Oroville) unimpaired flow
+define UNIMP_YUBA {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
 
+define UNIMP_YUBA_CFS {value UNIMP_YUBA*taf_cfs}
+
+define UNIMP_OROV {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
+define UNIMP_FEA_CFS {value UNIMP_OROV*taf_cfs}
+
+define UNIMP_YUBFEA_CFS {value UNIMP_FEA_CFS+ UNIMP_YUBA_CFS}
+
+! vvvv existing min flow requirement vvvv 
+define minflowFeaMouth {timeseries kind 'FLOW-MIN-REQUIRED' units 'CFS'} !Mouth of Feather River  (232)
+! ^^^^^ existing min flow requirement ^^^^
+
+!goal MouthMinFlow {C_YubFea_MIF < minflowFeaMouth}
+
+! COEQWAL: replaced existing minflow requirement with options for 
+!         existing, unimpaired fraction, or max of both
+define minflowUnimp_C_YubFea {std kind 'flow-min-unimp' units 'cfs'}
+
+goal set_minflowUnimp_C_YubFea {minflowUnimp_C_YubFea = yubfea_unimp_fraction*UNIMP_YUBFEA_CFS}
+
+goal set_totminyubfea {
+	lhs C_YubFea_MIF
+	case just_dfg {  ! just the baseline DFG/DWR aggreement MIF
+		condition yubfea_mif_option < 0.5
+		rhs minflowFeaMouth }
+	case just_unimp {
+		condition yubfea_mif_option < 1.5
+		rhs minflowUnimp_C_YubFea }
+	case unimp_and_ncp {
+		condition yubfea_mif_option < 2.5
+		rhs max(yubfea_unimp_fraction*UNIMP_YUBFEA_CFS, minflowFeaMouth) }
+	case otherwise {
+		condition always
+		rhs minflowFeaMouth	}
+}
 
 !=========================================================================
 !Limit Oroville release to be limited to 10,000 cfs Jul-Sep for the protection of Orchards downstream.

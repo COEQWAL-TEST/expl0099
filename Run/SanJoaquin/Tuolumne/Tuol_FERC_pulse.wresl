@@ -26,13 +26,22 @@ Purpose: Review and comment code
 define FERCPULSE { timeseries kind 'flow-min-required' units 'cfs' }
 
 ! Minimum flow for April and May is the FERC pulse, otherwise it is FERC min
+! COEQWAL: modifying for different options
 goal setC_TUOLcycle3 { 
     lhs C_TUOL_mif
-    case AprilMay {
-        condition   month >= apr .and. month <= may
+    case AprilMayBL {
+        condition   month >= apr .and. month <= may .and. tuol_mif_option < 0.5
         rhs         /*MAX(0.,*/FERCPULSE /*+ I_TUOL)  */  
         lhs<rhs     penalty 0 }
-    case otherwise {
+    case AprilMayUnimp {
+        condition   month >= apr .and. month <= may .and. tuol_mif_option < 1.5
+        rhs         minflowUnimp_C_Tuol[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+    case AprilMayBoth {
+        condition   month >= apr .and. month <= may .and. tuol_mif_option < 1.5
+        rhs         max(FERCPULSE, minflowUnimp_C_Tuol[SJR_WQ1])
+        lhs<rhs     penalty 0 }
+	case otherwise {
         condition   always
         rhs         C_TUOL_mif[SJR_WQ1]   
         lhs<rhs     penalty 0 } 

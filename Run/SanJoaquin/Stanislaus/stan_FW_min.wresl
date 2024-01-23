@@ -28,6 +28,16 @@ define stanfish_yr {select stanf from stanf_yr given SJRI = wyt_SJR_stan  use li
 ! Alias stanfish_yr for output
 define stanfish_yrDV {alias stanfish_yr units 'taf'}
 
+! COEQWAL: unimpaired minimum flow optiosn
+define UNIMP_ST {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
+
+define UNIMP_ST_CFS {value UNIMP_ST*taf_cfs}
+
+define minflowUnimp_C_StanGdwn {std kind 'flow-min-unimp' units 'cfs'}
+
+goal set_minflowUnimp_C_StanGdwn {minflowUnimp_C_StanGdwn = stan_unimp_fraction*UNIMP_ST_CFS}
+
+
 ! Define minimum flows for Cycle 1 to be imposed on releases from New Melones
 define stanmin {select flow from stan_rpa given stanyr=stanfish_yr use linear where month=month} ! SP MBK
 
@@ -71,12 +81,49 @@ define stanmin2DV {alias stanmin2 units 'cfs'}
 ! Set limits on minimum fish flows for Reach 520 (Goodwin), CALSIM uses internal units of cfs
 !goal setC_STANGDWNcycle1 { C_STANGDWN_mif < max(stanmin2,stantemp) }
 
-goal setC_STANGDWNcycle1 { C_STANGDWN_mif < stanmin }
+! COEQWAL: following goal replaced with options goal below
+!goal setC_STANGDWNcycle1 { C_STANGDWN_mif < stanmin }
 define C_STANGDWNInstreamTgt {value max(0., OIDInstreamToBeMet*TAF_cfs)}
 define C_STANGDWNINSTGTDV {alias C_STANGDWNINSTREAMTGT kind 'output-cfs' units 'cfs'}
 goal setC_STANGDWNINSTREAM1 {C_STANGDWNINSTREAM = C_STANGDWNINSTREAMTGT}
 !goal setC_STANGDWNINSTREAM1 {C_STANGDWNINSTREAM < max(0., OIDInstreamToBeMet*TAF_cfs - stanmin)}
 ! Set limits on minimum fish flows for Reach 528 (Ripon), CALSIM uses internal units of cfs
 !goal setC_STANRIPNcycle1 { C_STANRIPN_mif < max(stanmin2,stantemp) }
-goal setC_STANRIPNcycle1 { C_STANRIPN_mif < stanmin }
+! COEQWAL: following goal replaced with options goal below
+!goal setC_STANRIPNcycle1 { C_STANRIPN_mif < stanmin }
 
+goal set_stanmin {
+	lhs C_STANGDWN_MIF
+	case just_bl {
+		condition stan_mif_option < 0.5
+		rhs stanmin
+		lhs<rhs penalty 0}
+	case just_unimp {
+		condition stan_mif_option < 1.5
+		rhs minflowUnimp_C_StanGdwn
+		lhs<rhs penalty 0}
+	case unimp_and_ncp {
+		condition wilkins_mif_option < 2.5
+		rhs max(stan_unimp_fraction*UNIMP_ST_CFS, stanmin) }
+	case otherwise {
+		condition always
+		rhs stanmin	}
+}
+
+goal set_stanripnmin {
+	lhs C_STANRIPN_MIF
+	case just_bl {
+		condition stan_mif_option < 0.5
+		rhs stanmin
+		lhs<rhs penalty 0}
+	case just_unimp {
+		condition stan_mif_option < 1.5
+		rhs minflowUnimp_C_StanGdwn
+		lhs<rhs penalty 0}
+	case unimp_and_ncp {
+		condition wilkins_mif_option < 2.5
+		rhs max(stan_unimp_fraction*UNIMP_ST_CFS, stanmin) }
+	case otherwise {
+		condition always
+		rhs stanmin	}
+}

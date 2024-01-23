@@ -21,6 +21,31 @@ Purpose: Review and comment code
 
 !############################################################################
 !Cycle 1 (FERC Minimum flows)
+define tuolumne_minflow {value UNIMP_TU_CFS * tuol_unimp_fraction}
+define minflowUnimp_C_Tuol {std kind 'flow-min-unimp' units 'cfs'}
+
+goal set_minflowUnimp_C_Tuol {minflowUnimp_C_Tuol = tuol_unimp_fraction*UNIMP_TU_CFS}
 
 ! Tuolumne River minimum channel flow (for reach C_TUOL1)
-goal setC_TUOLcycle1 { C_TUOL_mif < /*MAX(0.,*/FERCBASE /*+ I_TUOL)*/}
+!goal setC_TUOLcycle1 { C_TUOL_mif < /*MAX(0.,*/FERCBASE /*+ I_TUOL)*/}
+
+! COEQWAL: unimpaired flow and baseline min flow reqt options
+goal set_totmintuol {
+	lhs C_TUOL_mif
+	case just_bl {
+		condition tuol_mif_option < 0.5
+		rhs FERCBASE
+		lhs<rhs penalty 0}
+	case just_unimp {
+		condition tuol_mif_option < 1.5
+		rhs minflowUnimp_C_Tuol 
+		lhs<rhs penalty 0}
+	case unimp_and_bl {
+		condition tuol_mif_option < 2.5
+		rhs max(tuol_unimp_fraction*UNIMP_TU_CFS, FERCBASE)
+		lhs<rhs penalty 0}
+	case otherwise {
+		condition always
+		rhs FERCBASE
+		lhs<rhs penalty 0}
+}

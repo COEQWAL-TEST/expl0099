@@ -31,10 +31,42 @@ define FREvap_sep {
         value 0.0  } }
 
 ! Minimum required San Joaquin River release from Friant
-define C_MLRTN_min {
+define C_MLRTN_minA {
     select inc
     from Upper_SJR_losses
     where contract_month = contract_month }
+	
+! COEQWAL: addingn functionality for unimpaired flow requiremnt - option to
+!          augment the C_MLRTN_min by fraction of unimpaired flow if desired
+define UNIMP_SJ {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
+
+define UNIMP_SJ_CFS {value UNIMP_SJ*taf_cfs} ! convert to CFS from tAF
+
+define sjfriant_minflow {value UNIMP_SJ_CFS * sjr_unimp_fraction}
+define minflowUnimp_C_MLRTN {std kind 'flow-min-unimp' units 'cfs'}
+
+goal set_minflowUnimp_C_MLRTN {minflowUnimp_C_MLRTN = sjrfriant_unimp_fraction*UNIMP_SJ_CFS}
+
+goal set_totminSJR {
+	lhs C_MLRTN_min
+	case just_bl {
+		condition sjrfriant_mif_option < 0.5
+		rhs C_MLRTN_minA
+		lhs<rhs penalty 0}
+	case just_unimp {
+		condition sjrfriant_mif_option < 1.5
+		rhs minflowUnimp_C_MLRTN 
+		lhs<rhs penalty 0}
+	case unimp_and_bl {
+		condition sjrfriant_mif_option < 2.5
+		rhs max(sjrfriant_unimp_fraction*UNIMP_SJ_CFS, C_MLRTN_minA)
+		lhs<rhs penalty 0}
+	case otherwise {
+		condition always
+		rhs C_MLRTN_minA
+		lhs<rhs penalty 0}
+}
+
 ! Alias variable for C_MLRTN_min, save input value to DSS
 !define C_MLRTN_min_chk {alias C_MLRTN_min kind 'temp' units 'taf'}
 ! Sum of minimum required San Joaquin River releases from current month through September

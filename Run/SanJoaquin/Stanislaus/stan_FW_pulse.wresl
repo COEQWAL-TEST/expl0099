@@ -77,14 +77,24 @@ define stanpulse2 {
 !}
 
 ! Stanislaus F & W pulse flows for Cycle 3 April-May release, CALSIM uses internal units of cfs
+! COEQWAL: Modifying options to include combination of unimp flow and/or pulse reqt
 goal setC_STANGDWNcycle3 {
     lhs C_STANGDWN_mif
-    case AprMay {
-        condition   month >= apr .and. month <= may
+    case AprMayBL {
+        condition   month >= apr .and. month <= may .and. stan_mif_option < 0.5 ! baseline pulse flow
 !        rhs         max(stanpulse2, stantemp)
         rhs         stanpulse
         lhs<rhs     penalty 0 }
-    case otherwise {
+	case AprMayUnimp {
+		condition month>= apr .and. month <= may .and. stan_mif_option < 1.5 ! unimpaired flow reqt overrides pulse
+        rhs         minflowUnimp_C_StanGdwn[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+	case AprMayBoth {
+		condition month>= apr .and. month <= may .and. stan_mif_option < 2.5 ! unimpaired flow reqt overrides pulse
+        rhs         max(stanpulse, minflowUnimp_C_StanGdwn[SJR_WQ1])
+        lhs<rhs     penalty 0 }
+	}
+	case otherwise {
         condition   always
         rhs         C_STANGDWN_mif[SJR_WQ1]
           lhs<rhs        penalty 0 }

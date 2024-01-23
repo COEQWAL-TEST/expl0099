@@ -76,7 +76,40 @@ goal set_R_MERCED2A {R_MERCED2A = dloss_562A_pag}
 
 define D_MERCED1B_EST {value 1.1*CUAW_562A_pag + dperc_562A_pag + (1.1*CUAW_562A_pag + dperc_562A_pag)*0.175/0.825}
 
-goal C_MERCED1minflow {C_MERCED1_MIF < MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B))} 
+! COEQWAL: following goal moved to conditional statements below
+!goal C_MERCED1minflow {C_MERCED1_MIF < MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B))} 
+
+! COEQWAL: Option for modified min flow reqt based on unimpaired flow
+! get the unimpaired flow at for the Merced River
+define UNIMP_ME {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
+
+define UNIMP_ME_CFS {value UNIMP_ME*taf_cfs} ! convert to CFS from tAF
+
+define merced_minflow {value UNIMP_ME_CFS * merc_unimp_fraction}
+define minflowUnimp_C_MERCED {std kind 'flow-min-unimp' units 'cfs'}
+
+goal set_minflowUnimp_C_Merc {minflowUnimp_C_MERCED = merc_unimp_fraction*UNIMP_ME_CFS}
+
+! COEQWAL: unimpaired flow and baseline min flow reqt options
+goal set_totminmerc {
+	lhs C_MERCED1_MIF
+	case just_bl {
+		condition merc_mif_option < 0.5
+		rhs MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B))
+		lhs<rhs penalty 0}
+	case just_unimp {
+		condition merc_mif_option < 1.5
+		rhs minflowUnimp_C_Merced 
+		lhs<rhs penalty 0}
+	case unimp_and_bl {
+		condition merc_mif_option < 2.5
+		rhs max(merc_unimp_fraction*UNIMP_ME_CFS, MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B)))
+		lhs<rhs penalty 0}
+	case otherwise {
+		condition always
+		rhs MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B))
+		lhs<rhs penalty 0}
+}
 
 /*
 Merced River Diversion M&I pumping- all met by GW (A)

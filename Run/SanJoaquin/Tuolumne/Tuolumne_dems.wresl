@@ -48,6 +48,9 @@ Purpose: Review and comment code
 */
 
 !############################################################################
+! COEQWAL: unimpaired flow for min flow reqt
+define UNIMP_TU {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
+define UNIMP_TU_CFS {value UNIMP_TU * taf_cfs}
 
 ! Retrieve FERC min flows from predefined timeseries (excludes Apr-May pulse)
 define FERCBASE {timeseries kind 'flow-min-required' units 'cfs' }
