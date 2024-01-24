@@ -93,7 +93,6 @@ goal setC_STANGDWNcycle3 {
 		condition month>= apr .and. month <= may .and. stan_mif_option < 2.5 ! unimpaired flow reqt overrides pulse
         rhs         max(stanpulse, minflowUnimp_C_StanGdwn[SJR_WQ1])
         lhs<rhs     penalty 0 }
-	}
 	case otherwise {
         condition   always
         rhs         C_STANGDWN_mif[SJR_WQ1]

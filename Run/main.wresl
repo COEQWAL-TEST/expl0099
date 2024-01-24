@@ -44,26 +44,26 @@ initial {
 	!  values >0 set the minflow requirement at increasing fractions of the unimpaired
 	!  flow on the tributary
 	
-	svar wilkins_mif_option {0} ! switch for MIF scenario: 0: just ncp, 1: unimpaired flow; 2: both
-	svar ncp_unimp_fraction {0.0} ! fraction of unimpaired flow to assign at Wilkins Slough
+	svar wilkins_mif_option {value 0} ! switch for MIF scenario: 0: just ncp, 1: unimpaired flow; 2: both
+	svar ncp_unimp_fraction {value 0.0} ! fraction of unimpaired flow to assign at Wilkins Slough
 	
-	svar yubfea_mif_option {0} ! switch for MIF scenario: 0: just baseline, 1: unimpaired flow; 2: both
-	svar yubfea_unimp_fraction {0.0}  !<-- fraction of combined Feather (Oroville) and Yuba unimpaired flow at mouth of Feather
+	svar yubfea_mif_option {value 0} ! switch for MIF scenario: 0: just baseline, 1: unimpaired flow; 2: both
+	svar yubfea_unimp_fraction {value 0.0}  !<-- fraction of combined Feather (Oroville) and Yuba unimpaired flow at mouth of Feather
 	
-	svar amer_mif_option {0}
-	svar amer_unimp_fraction {0.0}
+	svar amer_mif_option {value 0}
+	svar amer_unimp_fraction {value 0.0}
 	
-	svar stan_mif_option {0}
-	svar stan_unimp_fraction {0.0}
+	svar stan_mif_option {value 0}
+	svar stan_unimp_fraction {value 0.0}
 	
-	svar tuol_mif_option {0}
-	svar tuol_unimp_fraction {0.0}
+	svar tuol_mif_option {value 0}
+	svar tuol_unimp_fraction {value 0.0}
 	
-	svar merc_mif_option {0}
-	svar merc_unimp_fraction {0.0}
+	svar merc_mif_option {value 0}
+	svar merc_unimp_fraction {value 0.0}
 	
-	svar sjrfriant_mif_option {0} 
-	svar sjrfriant_unimp_fraction {0.0}
+	svar sjr_mif_option {value 0} 
+	svar sjr_unimp_fraction {value 0.0}
 }
 
 SEQUENCE CYCLE1 {

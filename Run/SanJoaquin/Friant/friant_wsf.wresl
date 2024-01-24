@@ -31,22 +31,40 @@ define FREvap_sep {
         value 0.0  } }
 
 ! Minimum required San Joaquin River release from Friant
-define C_MLRTN_minA {
+define C_MLRTN_min {
     select inc
     from Upper_SJR_losses
     where contract_month = contract_month }
 	
-! COEQWAL: addingn functionality for unimpaired flow requiremnt - option to
-!          augment the C_MLRTN_min by fraction of unimpaired flow if desired
+!define C_MLRTN_min {std kind 'flow-min-instream' units 'cfs'}
+
+! COEQWAL: addingn functionality for unimpaired flow requiremnt - 
+!         assigning the min flow to SJR_LNDR for now - a downstream point that 
+!         may also implicate Eastman and Hensley
 define UNIMP_SJ {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
 
 define UNIMP_SJ_CFS {value UNIMP_SJ*taf_cfs} ! convert to CFS from tAF
 
-define sjfriant_minflow {value UNIMP_SJ_CFS * sjr_unimp_fraction}
-define minflowUnimp_C_MLRTN {std kind 'flow-min-unimp' units 'cfs'}
+define sjr_minflow {value UNIMP_SJ_CFS * sjr_unimp_fraction}
+define minflowUnimp_C_SJRLNDR {std kind 'flow-min-unimp' units 'cfs'}
 
-goal set_minflowUnimp_C_MLRTN {minflowUnimp_C_MLRTN = sjrfriant_unimp_fraction*UNIMP_SJ_CFS}
+goal set_minflowUnimp_C_SJRLNDR {minflowUnimp_C_SJRLNDR = sjr_unimp_fraction*UNIMP_SJ_CFS}
+goal set_SJRminflows {
+	lhs C_SJRLNDR_MIF 
+	case no_mif {
+		condition sjr_mif_option < 0.5
+		rhs 0.0
+	}
+	case unimp {
+		condition sjr_mif_option < 1.5
+		rhs minflowUnimp_C_SJRLNDR
+		lhs<rhs penalty 0}
+	case otherwise {
+		condition always 
+		rhs 0.0 }
+}
 
+/*
 goal set_totminSJR {
 	lhs C_MLRTN_min
 	case just_bl {
@@ -65,7 +83,7 @@ goal set_totminSJR {
 		condition always
 		rhs C_MLRTN_minA
 		lhs<rhs penalty 0}
-}
+}*/
 
 ! Alias variable for C_MLRTN_min, save input value to DSS
 !define C_MLRTN_min_chk {alias C_MLRTN_min kind 'temp' units 'taf'}

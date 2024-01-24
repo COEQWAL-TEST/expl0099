@@ -73,6 +73,11 @@ define C_MDOTABC {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Flow to 
 define C_MDOTABVAMP {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Pool Exch Donation to VAMP
 define C_SJRSACKBC {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Flow to Exchange Contractors and Refuges from Sack Dam
 define C_SJRLNDR {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Below Lander Av.
+! COEQWAL: adding a downstream mainchannel SJR minflow arc
+define C_SJRLNDR_MIF {lower 0 upper 99999 kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! minimum flow arc 
+define C_SJRLNDR_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'} !excess at Lander, to go with min
+goal C_SJRLNDR_TOTAL {C_SJRLNDR = C_SJRLNDR_MIF + C_SJRLNDR_EXC} 
+
 define C_SJRMS {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR avb Salt Slough
 define C_SJRMER {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Merced to Tuolomne
 define C_SJRTUOL {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Tuolomne to Stanislaus

@@ -30,6 +30,7 @@ define minflow_C_HSt {select HStMin
 !goal HSt_min {C_HSt_MIF < minflow_C_HSt}
 
 ! COEQWAL: implementing uinmpaired minflow requirement, with options
+define UNIMP_FOLS {timeseries kind 'FLOW-UNIMPAIRED' units 'TAF'}
 define UNIMP_FOLS_CFS {value UNIMP_FOLS * taf_cfs}
 
 define minflowUnimp_C_Hst {value UNIMP_FOLS_CFS * amer_unimp_fraction}
