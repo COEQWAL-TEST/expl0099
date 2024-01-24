@@ -87,11 +87,11 @@ goal setC_STANGDWNcycle3 {
         lhs<rhs     penalty 0 }
 	case AprMayUnimp {
 		condition month>= apr .and. month <= may .and. stan_mif_option < 1.5 ! unimpaired flow reqt overrides pulse
-        rhs         minflowUnimp_C_StanGdwn[SJR_WQ1]
+        rhs         C_STANGDWN_mif[SJR_WQ1] !minflowUnimp_C_StanGdwn
         lhs<rhs     penalty 0 }
 	case AprMayBoth {
 		condition month>= apr .and. month <= may .and. stan_mif_option < 2.5 ! unimpaired flow reqt overrides pulse
-        rhs         max(stanpulse, minflowUnimp_C_StanGdwn[SJR_WQ1])
+        rhs         max(stanpulse, C_STANGDWN_mif[SJR_WQ1]) !minflowUnimp_C_StanGdwn)
         lhs<rhs     penalty 0 }
 	case otherwise {
         condition   always

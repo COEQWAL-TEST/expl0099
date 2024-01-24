@@ -35,11 +35,11 @@ goal setC_TUOLcycle3 {
         lhs<rhs     penalty 0 }
     case AprilMayUnimp {
         condition   month >= apr .and. month <= may .and. tuol_mif_option < 1.5
-        rhs         minflowUnimp_C_Tuol[SJR_WQ1]
+        rhs         C_TUOL_mif[SJR_WQ1] !minflowUnimp_C_Tuol
         lhs<rhs     penalty 0 }
     case AprilMayBoth {
         condition   month >= apr .and. month <= may .and. tuol_mif_option < 1.5
-        rhs         max(FERCPULSE, minflowUnimp_C_Tuol[SJR_WQ1])
+        rhs         max(FERCPULSE, C_TUOL_mif[SJR_WQ1]) !minflowUnimp_C_Tuol)
         lhs<rhs     penalty 0 }
 	case otherwise {
         condition   always
