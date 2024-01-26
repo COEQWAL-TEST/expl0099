@@ -1,0 +1,51 @@
+---
+regs:
+  Run\Lookup\GUI_Regs.table:
+    EI_DLTSW: 1
+    NDO_DLTSW: 1
+    RV_DLTSW: 1
+    X2_DLTSW: 1
+    X2ROE_DLTSW: 1
+    EM_DLTSW: 1
+    JP_DLTSW: 1
+    RS_DLTSW: 1
+    CO_DLTSW: 1
+minflow:
+  Run\main.wresl:
+    sac_mif_opt: 0
+    sac_mif_val: 0
+    yubfea_mif_opt: 0
+    yubfea_mif_val: 0.0
+    amer_mif_opt: 0
+    amer_mif_val: 0.0
+    stan_mif_opt: 0
+    stan_mif_val: 0.0
+    tuol_mif_opt: 0
+    tuol_mif_val: 0.0
+    merc_mif_opt: 0
+    merc_mif_val: 0.0
+    sjr_mif_opt: 0
+    sjr_mif_val: 0.0
+priority: 
+  Run\main.wresl:  
+    cvp_priority_opt: 0
+carryover:
+  Run\Swp_dellogic\WSI_DI\delcar_swp.wresl:
+    swp_carryover_fraction: 0.5 # default is 0.5
+  Run\CVP_Dellogic\cvsp_delivery_logic_system\wsianddi_cvp_system.wresl:
+    cvp_supply_fraction: 1.0 # default is 1, lowering increases carryover
+demands:
+  Run\main.wresl:
+    cvpag_n_frac: 1.0 # default 1
+    cvprf_n_frac: 1.
+    cvpsc_n_frac: 1.
+    cvpex_s_frac: 1.
+    cvpmi_n_frac: 1.
+    delta_frac: 1.0
+  Run\Lookup\GUI_SODDemand.table:
+    swp_udef_flag: 1 # 1: default, 2: user-defined
+    cvp_udef_flag: 1 # 1: default, 2: user-defined
+    swp_ag_amt: 1032.1 # default amount 1032.1 TAF 
+    cvp_ag_amt: 1963.1 # default amount 1963.1
+    
+ 
