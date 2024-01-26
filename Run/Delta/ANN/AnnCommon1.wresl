@@ -66,12 +66,12 @@ define daysindv {alias daysin kind 'DAYS' units 'DAYS'}
 ! define the other flows that go into making the export component
 define net_delta_cu { value                       ! Net Delta Consumptive Use
 !        DEMAND_D400B - I400 +    ! Don't include this because it occurs upstream of C400
-        DEMAND_D_BrananIs_NP - I_BrananIs +
-        DEMAND_D_SacSJR_NP - I_SacSJR +
-        DEMAND_D_Terminous_NP - I_Terminous +
-        DEMAND_D_Stockton_NP - I_Stockton +
-        DEMAND_D_MedfordIs_NP - I_MedfordIs +
-        DEMAND_D_ConeyIs_NP - I_ConeyIs
+        DEMAND_D_BrananIs_NP_BASE*delta_demand_frac - I_BrananIs +
+        DEMAND_D_SacSJR_NP_BASE*delta_demand_frac - I_SacSJR +
+        DEMAND_D_Terminous_NP_BASE*delta_demand_frac - I_Terminous +
+        DEMAND_D_Stockton_NP_BASE*delta_demand_frac - I_Stockton +
+        DEMAND_D_MedfordIs_NP_BASE*delta_demand_frac - I_MedfordIs +
+        DEMAND_D_ConeyIs_NP_BASE*delta_demand_frac - I_ConeyIs
 }
 
 define net_DICU{ lower unbounded kind 'DICU_FLOW' units 'CFS' }

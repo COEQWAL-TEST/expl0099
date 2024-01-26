@@ -11,7 +11,7 @@
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DATE" value="2024-01-23"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DESCRIPTION" value="auto-generated launch file from config: CalLite COEQWAL exploratory baseline"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DSSENDOUTPUT" value="yes"/>
-<stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR" value="D:\02_Projects\CalSim\proj\2023_CalClimateInit\calsim\Exploratory_v01\cl_combined_templates\\DSS\cl_coeqwal_combined_MinFlowTest.dss"/>
+<stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR" value="D:\02_Projects\CalSim\proj\2023_CalClimateInit\calsim\Exploratory_v01\cl_combined_templates\\DSS\cl_coeqwal_combined_DeltaDemandTest.dss"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_DVAR_MS2" value=""/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_ENDDAY" value="30"/>
 <stringAttribute key="wpp.debugModel.ATTR_WPP_ENDMONTH" value="sep"/>

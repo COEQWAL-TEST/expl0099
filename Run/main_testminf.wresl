@@ -32,7 +32,6 @@ initial {
 	svar cvpsc_demand_ratio {value 1.0}
 	svar cvpex_demand_ratio {value 1.0}
 	svar cvpmi_demand_ratio_n {value 1.0}
-	svar delta_demand_frac {value 0.9} 
 	
 	svar cvp_priority_alt {value 0} !<-- 0: baseline cuts priorities; 1: equal to all contracts
 	svar CVPdemandswitch   {select Option from GUI_SODdemand where Index = 5} ! {value 1} !<--: moved here from Options_Switches.wresl
@@ -46,7 +45,7 @@ initial {
 	!  flow on the tributary
 	
 	svar wilkins_mif_option {value 0} ! switch for MIF scenario: 0: just ncp, 1: unimpaired flow; 2: both
-	svar ncp_unimp_fraction {value 0.0} ! fraction of unimpaired flow to assign at Wilkins Slough
+	svar ncp_unimp_fraction {value 0} ! fraction of unimpaired flow to assign at Wilkins Slough
 	
 	svar yubfea_mif_option {value 0} ! switch for MIF scenario: 0: just baseline, 1: unimpaired flow; 2: both
 	svar yubfea_unimp_fraction {value 0.0}  !<-- fraction of combined Feather (Oroville) and Yuba unimpaired flow at mouth of Feather

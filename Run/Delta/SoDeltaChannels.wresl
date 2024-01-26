@@ -28,7 +28,7 @@ DICU is Delta Island Consumptive Use
 
 ! Calculate So Delta Channel net DICU for flow split calculations
 ! Newly defined splits of DICU and Delta Precip for So Delta Channel calculations
-define netDICU_SOD{ value demand_D_ConeyIs_NP - I_ConeyIs }
+define netDICU_SOD{ value demand_D_ConeyIs_NP_BASE*delta_demand_frac - I_ConeyIs }
 
 !Define case to use appropriate coef. for flow splits
 define casedef {
