@@ -30,7 +30,7 @@ goal setL143A {L143A = 0.0} !conveyance loss are set in the main GCID canal (L14
 
 define D143A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD143ASC {D143A_psc < target_D14301GCID !*cvpsc_demand_ratio + L143A} !20240119 jmg-ucsc:  addded adjustment by the perdel allocation 
+goal limitD143ASC {D143A_psc < target_D14301GCID*cvpsc_demand_ratio + L143A} !20240119 jmg-ucsc:  addded adjustment by the perdel allocation 
 
 goal splitD143A  {D143A = D143A_psc}
 
