@@ -85,4 +85,8 @@ define acvpdem_tot_udef_sys {value acvpdem_pag_udef_sys + acvpdem_pmi_udef_sys +
 define CVP_tot_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_tot_udef_sys / acvpdem_tot_sys}
                           case full_contract {condition always value 1.}}
 
-
+define acvpdem_pag_udef_sysdv {alias acvpdem_pag_udef_sys kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_pmi_udef_sysdv {alias acvpdem_pmi_udef_sys kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_prf_udef_sysdv {alias acvpdem_prf_udef_sys kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_psc_udef_sysdv {alias acvpdem_psc_udef_sys kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_pex_udef_sysdv {alias acvpdem_pex_udef_sys kind 'USER-DEFINED-DEMAND' units 'TAF'}

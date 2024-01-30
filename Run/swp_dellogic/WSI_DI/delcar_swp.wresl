@@ -59,6 +59,9 @@ define SWP_ag_ratio  {case user_defined  {condition SWPdemandswitch == 2 value S
 define SWP_tot_ratio {case user_defined  {condition SWPdemandswitch == 2 value max_TableA / tableA_tot} 
                       case full_contract {condition always value 1.}}
 
+define swp_mwd_udef_dv {alias swp_mwd_udef kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define swp_oth_udef_dv {alias swp_oth_udef kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define swp_ag_udef_dv {alias swp_ag_udef kind 'USER-DEFINED-DEMAND' units 'TAF'}
 
 !whether implement export estimates for BO actions: no: value=0; yes: value=1
 !currently on only when OMR RPA is on

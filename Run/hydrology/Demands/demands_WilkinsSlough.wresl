@@ -21,7 +21,8 @@ goal setL122A {L122A = D122A * ConvLs_14301}  !set conveyance loss
 define D122A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
 goal limitD122ASC {D122A < perdel_cvpsc_sys * con_14301SC*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
-goal limitD122ASC_1 {D122A < target_D14301SC + L122A}
+goal limitD122ASC_1 {D122A < target_D14301SC*cvpsc_demand_ratio + L122A} ! 20240119 jmg-ucsc: adjusting here too - D122A is the minimum of target and contract - in order for the delivery to be reduced in all cases, need to adjust in both constraints
+
 
 goal splitD122A  {D122A = D122A_psc}
 
@@ -29,7 +30,8 @@ goal setL143A {L143A = 0.0} !conveyance loss are set in the main GCID canal (L14
 
 define D143A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
-goal limitD143ASC {D143A_psc < target_D14301GCID + L143A} !jmg-ucsc: shouldn't this be reduced by the perdel allocation too?
+goal limitD143ASC {D143A_psc < target_D14301GCID !*cvpsc_demand_ratio + L143A} !20240119 jmg-ucsc:  addded adjustment by the perdel allocation 
+
 goal splitD143A  {D143A = D143A_psc}
 
 ! WBA8NS ------------------------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ goal setL122B {L122B = D122B * ConvLs_14501}  !set conveyance loss
 define D122B_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
 goal limitD122BSC {D122B < perdel_cvpsc_sys * con_14501SC*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
-goal limitD122BSC_1 {D122B < target_D14501SC + L122B}
+goal limitD122BSC_1 {D122B < target_D14501SC*cvpsc_demand_ratio + L122B} !20240119 jmg-ucsc: adjusting here too - D122B is the minimum of target and contract - in order for the delivery to be reduced in all cases, need to adjust in both constraints
 
 goal splitD122B  {D122B = D122B_psc}
 
@@ -84,7 +86,7 @@ goal setL129A {L129A = D129A * ConvLs_18301}  !set conveyance loss
 define D129A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
 goal limitD129ASC {D129A < perdel_cvpsc_sys * con_18301SC*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
-goal limitD129ASC_1 {D129A < target_D18301SC + L129A}
+goal limitD129ASC_1 {D129A < target_D18301SC*cvpsc_demand_ratio + L129A}  !20240119 jmg-ucsc: adding adjustment to target - delivery is minimum of adjsuted target and contract
 
 goal splitD129A  {D129A = D129A_psc}
 
@@ -94,7 +96,7 @@ goal setL128 {L128 = D128 * ConvLs_131} !set conveyance loss
 define D128_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
 
 goal limitD128SC {D128 < perdel_cvpsc_sys * con_131SC*cvpsc_demand_ratio}  !20231129 jmg-ucsc: adjusting for custom demand modifications
-goal limitD128SC_1 {D128 < target_D131SC + L128}
+goal limitD128SC_1 {D128 < target_D131SC*cvpsc_demand_ratio + L128}  !20240119 jmg-ucsc: adjusting demand as well as contract
 
 goal splitD128  {D128 = D128_psc}
 

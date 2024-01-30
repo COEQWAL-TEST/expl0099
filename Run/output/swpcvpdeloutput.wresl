@@ -45,5 +45,29 @@ define del_cvp_psc_n {alias D104_psc + D143A_psc + D122A_psc + D145A_psc + D122B
 	                           D128_psc + D163_psc + D165_psc + D162_psc
 		  		   kind  'delivery-cvp'
     	                     	   units 'cfs'}
+
+define dem_cvp_psc_n {alias dem_d104_PSC + target_D14301GCID*cfs_taf + 
+							max(target_D14301SC, con_14301SC)*cfs_taf + 
+							target_D14501GCID*cfs_taf +
+							max(target_D14501SC, con_14501SC)*cfs_taf + /*placeholder D183_psc?*/ 
+							max(target_D18301SC, con_18301SC)*cfs_taf + 
+							max(target_D131SC, con_131SC)*cfs_taf +
+							dem_D163_psc + dem_d165_psc + 
+							dem_D162a_psc*cfs_taf + dem_D162b_psc*cfs_taf + dem_D162c_psc*cfs_taf
+							kind 'demand-cvp'
+							units 'TAF'}
+
+define dem_cvp_psc_n_udef {alias (dem_d104_PSC + target_D14301GCID*cfs_taf + 
+							max(target_D14301SC, con_14301SC)*cfs_taf + 
+							target_D14501GCID*cfs_taf +
+							max(target_D14501SC, con_14501SC)*cfs_taf + /*placeholder D183_psc?*/ 
+							max(target_D18301SC, con_18301SC)*cfs_taf + 
+							max(target_D131SC, con_131SC)*cfs_taf +
+							dem_D163_psc + dem_d165_psc + 
+							dem_D162a_psc*cfs_taf + dem_D162b_psc*cfs_taf + dem_D162c_psc*cfs_taf)*cvpsc_demand_ratio
+							kind 'demand-cvp'
+							units 'TAF'}
+
     	                     	   
 define del_cvp_total_n {alias D_RedBlf_p + D_Wilkns_p + D_SacAme_p + D_Nimbus_p + D_Folsm_p kind 'DELIVERY-CVP' units 'CFS' }
+

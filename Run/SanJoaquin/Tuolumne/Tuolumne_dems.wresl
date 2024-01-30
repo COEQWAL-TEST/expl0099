@@ -124,7 +124,7 @@ goal set_dloss_545A_pag {dloss_545A_pag = D_TUOLC * (1.-(1.1*.75))}
 define dperc_545A_pag {value cuaw_545A_pag * .3}
 
 ! Limit deliveries at node 545A to the river diversion requirement
-goal set_D_TUOLC_A_riv {D_TUOLC_A_riv < 1.1*CUAW_545A_pag + dperc_545A_pag}
+goal set_D_TUOLC_A_riv {D_TUOLC_A_riv < 1.1*CUAW_545A_pag + dperc_545A_pag}
 
 ! Set the return flow variable equal to the above defined district loss
 goal set_R_SJRTUOLj {R_SJRTUOLj = dloss_545A_pag}

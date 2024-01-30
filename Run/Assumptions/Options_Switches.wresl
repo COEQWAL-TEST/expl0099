@@ -52,6 +52,10 @@ define acvpdem_pag_udef_s   {select Option from GUI_SODdemand where Index = 6}
 define acvpdem_pmi_udef_s   {select Option from GUI_SODdemand where Index = 7}
 define acvpdem_prf_udef_s   {select Option from GUI_SODdemand where Index = 8}
 
+define acvpdem_pag_udef_sdv {alias acvpdem_pag_udef_s kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_pmi_udef_sdv {alias acvpdem_pmi_udef_s kind 'USER-DEFINED-DEMAND' units 'TAF'}
+define acvpdem_prf_udef_sdv {alias acvpdem_prf_udef_s kind 'USER-DEFINED-DEMAND' units 'TAF'}
+
 /* D1641/D1485 Regulation Switches*/
 define RV_DLTSW     {select OPTION from gui_Regs where Index = 4}
 define X2_DLTSW     {select OPTION from gui_Regs where Index = 5}
