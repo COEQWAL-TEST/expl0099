@@ -187,7 +187,11 @@ goal set_limit_D_CALAVC { D_CALAVC < max(0.,(month_D_CALAV_mi + month_D_CALAV_ag
 Stockton East Water District and Riparian River Users
 Retrieve predefined CUAW timeseries values for SEWD Ag Downstream of Bellota demands
 */
-define cuaw_511_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: functionality to adjust SOD non-CVP/SWP demands
+define cuaw_511_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_511_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_511_pag {value cuaw_511_pag_base*sod_np_demand_frac}
+goal set_cuaw_511_pag {cuaw_511_pagDV = cuaw_511_pag}
 
 ! Decision variable for SEWD/Riparian Ag losses as 10 cfs ***BOGUS
 define dloss_511_pag {value 10.0}
@@ -224,7 +228,10 @@ goal set_R_SJRCALA {R_SJRCALA = Rfactor_514A*D511_pag}
 Stockton East Water District Ag Non-District Demands
 Retrieve predefined CUAW timeseries values for non-district
 */
-define cuaw_511_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_511_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_511_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_511_ND {value cuaw_511_ND_base*sod_np_demand_frac}
+goal set_cuaw_511_ND {cuaw_511_NDDV = cuaw_511_ND}
 
 ! Deep percolation is assumed to be 25% of CUAW
 define dperc_511_ND {value cuaw_511_nd * 0.25}

@@ -85,7 +85,11 @@ define CSJSEWD_PAGyr {
 define CSJSEWD_PAGyr_a {alias CSJSEWD_PAGyr kind 'temp' units 'taf'}
 
 ! Retrieve predefined CUAW timeseries values for SJR demand
-define cuaw_512_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_512_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_512_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_512_pag {value cuaw_512_pag_base*sod_np_demand_frac}
+goal set_cuaw_512_pag {cuaw_512_pagDV = cuaw_512_pag}
 
 ! Define deep percolation as 30% of CUAW (assumed value)
 define dperc_512_pag {value cuaw_512_pag * .3}
@@ -96,8 +100,8 @@ define ann_CSJIDdv {std kind 'annual-demand' units 'taf'}
 define ann_CSJID {
     case mar {
         condition month == mar
-        sum(i=0,11,1) max(0.,(cuaw_512_pag(i)*1.1 + cuaw_512_pag(i)*0.3
-                       - min(i512(i), (cuaw_512_pag(i)*1.1 + cuaw_512_pag(i)*0.3)))) * cfs_taf(i)}
+        sum(i=0,11,1) max(0.,(cuaw_512_pag_base(i)*sod_np_demand_frac*1.1 + cuaw_512_pag_base(i)*sod_np_demand_frac*0.3
+                       - min(i512(i), (cuaw_512_pag_base(i)*sod_np_demand_frac*1.1 + cuaw_512_pag_base(i)*sod_np_demand_frac*0.3)))) * cfs_taf(i)}
     case initialCase{
           condition month < mar .and. wateryear == 1922
           value 132.0 }   ! set to annual average
@@ -200,7 +204,12 @@ goal limit_D_STANGDWNC {D_STANGDWNC < max(0., ((OID_South_yr - OID_South_pct*ann
 Non-District GW Pumping
 */
 ! Define non district consumptive use of applied water for Oakdale ID South
-define cuaw_531_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_531_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_531_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_531_ND {value cuaw_531_ND_base*sod_np_demand_frac}
+goal set_cuaw_531_ND {cuaw_531_NDDV = cuaw_531_ND}
+
 ! Define non district deep percolation for Oakdale ID South
 define dperc_531_nd {value cuaw_531_ND * .3}
 ! Set limits on non district demands
@@ -343,7 +352,12 @@ goal setD523_pag {D523_pag < 1.1*cuaw_523_pag/D523_pag_factor + dloss_523_pag}
 River Diversion and Returns
 */
 ! Define consumptive use applied water for Stanislaus River riparian diversion
-define cuaw_STANRIPNA_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_STANRIPNA_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_STANRIPNA_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_STANRIPNA_pag {value cuaw_STANRIPNA_pag_base*sod_np_demand_frac}
+goal set_cuaw_STANRIPNA_pag {cuaw_STANRIPNA_pagDV = cuaw_STANRIPNA_pag}
+
 ! Define canal loss for Stanislaus River riparian delivery
 define dloss_STANRIPNA_pag {std kind 'local-loss' units 'cfs'}
 ! Set loss limits on riparian delivery

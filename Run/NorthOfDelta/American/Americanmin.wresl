@@ -39,16 +39,20 @@ goal set_totminHst {
 	lhs C_HSt_MIF
 	case just_bl {  !< -- baseline Hst minflow reqt
 		condition amer_mif_option < 0.5
-		rhs minflow_C_HSt }
+		rhs minflow_C_HSt 
+		lhs<rhs penalty 0}
 	case just_unimp {  !<-- unipaired flow minflow reqt only
 		condition amer_mif_option < 1.5
-		rhs minflowUnimp_C_Hst }
+		rhs minflowUnimp_C_Hst 
+		lhs<rhs penalty 0}
 	case unimp_and_bl {
 		condition amer_mif_option < 2.5
-		rhs max(UNIMP_FOLS_CFS * amer_unimp_fraction, minflow_C_HSt) }
+		rhs max(UNIMP_FOLS_CFS * amer_unimp_fraction, minflow_C_HSt) 
+		lhs<rhs penalty 0}
 	case otherwise {
 		condition always
-		rhs minflow_C_HSt	}
+		rhs minflow_C_HSt	
+		lhs<rhs penalty 0}
 }
 
 goal setHSttoMin {

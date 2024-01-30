@@ -150,16 +150,20 @@ goal set_totminyubfea {
 	lhs C_YubFea_MIF
 	case just_dfg {  ! just the baseline DFG/DWR aggreement MIF
 		condition yubfea_mif_option < 0.5
-		rhs minflowFeaMouth }
+		rhs minflowFeaMouth
+		lhs<rhs penalty 0}
 	case just_unimp {
 		condition yubfea_mif_option < 1.5
-		rhs minflowUnimp_C_YubFea }
+		rhs minflowUnimp_C_YubFea
+		lhs<rhs penalty 0}
 	case unimp_and_ncp {
 		condition yubfea_mif_option < 2.5
-		rhs max(yubfea_unimp_fraction*UNIMP_YUBFEA_CFS, minflowFeaMouth) }
+		rhs max(yubfea_unimp_fraction*UNIMP_YUBFEA_CFS, minflowFeaMouth)
+		lhs<rhs penalty 0}
 	case otherwise {
 		condition always
-		rhs minflowFeaMouth	}
+		rhs minflowFeaMouth	
+		lhs<rhs penalty 0}
 }
 
 !=========================================================================

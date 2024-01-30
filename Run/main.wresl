@@ -33,6 +33,7 @@ initial {
 	svar cvpex_demand_ratio {value 1.0}
 	svar cvpmi_demand_ratio_n {value 1.0}
 	svar delta_demand_frac {value 0.9} 
+	svar sod_np_demand_frac {value 0.9}
 	
 	svar cvp_priority_alt {value 0} !<-- 0: baseline cuts priorities; 1: equal to all contracts
 	svar CVPdemandswitch   {select Option from GUI_SODdemand where Index = 5} ! {value 1} !<--: moved here from Options_Switches.wresl

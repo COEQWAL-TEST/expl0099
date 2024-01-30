@@ -70,16 +70,20 @@ goal set_totminncp {
 	lhs C_WILKNS_MIF + C_WILKNS_MIF_DAILY
 	case just_ncp {
 		condition wilkins_mif_option < 0.5
-		rhs minflowNCP_C_Wilkns }
+		rhs minflowNCP_C_Wilkns 
+		lhs<rhs penalty 5}
 	case just_unimp {
 		condition wilkins_mif_option < 1.5
-		rhs minflowUnimp_C_Wilkns }
+		rhs minflowUnimp_C_Wilkns 
+		lhs<rhs penalty 5}
 	case unimp_and_ncp {
 		condition wilkins_mif_option < 2.5
-		rhs max(ncp_unimp_fraction*UNIMP_SRBB_CFS, ncp_relax_final) }
+		rhs max(ncp_unimp_fraction*UNIMP_SRBB_CFS, ncp_relax_final) 
+		lhs<rhs penalty 5}
 	case otherwise {
 		condition always
-		rhs minflow_C_WilknsNCP	}
+		rhs minflow_C_WilknsNCP	
+		lhs<rhs penalty 5}
 }
 
 !goal set_NCP {C_Wilkns_MIF < minflow_C_Wilkns}

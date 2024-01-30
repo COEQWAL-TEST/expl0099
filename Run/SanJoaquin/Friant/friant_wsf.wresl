@@ -56,7 +56,7 @@ goal set_SJRminflows {
 		rhs 0.0
 	}
 	case unimp {
-		condition sjr_mif_option < 1.5
+		condition sjr_mif_option < 2.5
 		rhs minflowUnimp_C_SJRLNDR
 		lhs<rhs penalty 0}
 	case otherwise {

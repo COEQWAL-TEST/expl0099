@@ -54,8 +54,10 @@ Merced River Riparian Depletion (D_MERCED1B)
 */
 
 ! Retrieve predefined CUAW timeseries values for SJR demand node 562A
-define cuaw_562A_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
-
+define cuaw_562A_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_562A_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_562A_pag {value cuaw_562A_pag_base*sod_np_demand_frac}
+goal set_cuaw_562A_pag {cuaw_562A_pagDV = cuaw_562A_pag}
 ! Decision variable that defines 562A return flow of district losses
 define dloss_562A_pag {std kind 'local-loss' units 'cfs'}
 
@@ -132,7 +134,11 @@ Merced ID Area - including Bear Creek Refuge and DAU 212
 */
 
 ! Retrieve predefined CUAW timeseries values for Merced ID demand node 571
-define cuaw_571_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_571_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_571_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_571_pag {value cuaw_571_pag_base*sod_np_demand_frac}
+goal set_cuaw_571_pag {cuaw_571_pagDV = cuaw_571_pag}
 
 /*
 Each April, define the April thru September Merced ID demands the sum of
@@ -142,7 +148,7 @@ demands.
 define MercedDemTS_part {
     case april {
         condition month == apr
-        sum(i=0,5,1) 1.35*cuaw_571_pag(i)*cfs_taf(i) + demand_D572(i)*cfs_taf(i) }
+        sum(i=0,5,1) 1.35*cuaw_571_pag_base(i)*sod_np_demand_frac*cfs_taf(i) + demand_D572(i)*cfs_taf(i) }
     case otherwise {
         condition   always
         value 0. }
@@ -289,7 +295,7 @@ define ann_cuaw_571_pag {
         value 256. }
     case april  {
         condition month==apr
-        sum(i=0,5,1) cuaw_571_pag(i)*cfs_taf(i) }
+        sum(i=0,5,1) cuaw_571_pag_base(i)*sod_np_demand_frac*cfs_taf(i) }
     case otherwise {
         condition always
         value ann_571_pagdv(-1) }
@@ -403,7 +409,11 @@ Non-District GW Pumping
 */
 
 ! Retrieve non-district CUAW from predefined timeseries
-define cuaw_571_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_571_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_571_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_571_ND {value cuaw_571_ND_base*sod_np_demand_frac}
+goal set_cuaw_571_ND {cuaw_571_NDDV = cuaw_571_ND}
 
 ! Define non-district deep percolation as 25% of non-district CUAW
 define dperc_571_nd {value cuaw_571_ND * .25}
@@ -472,13 +482,17 @@ DAU212 at Node 573 - Stevenson, El Nido, etc
 */
 
 ! Retrieve CUAW values for DAU 212 from predefined timeseries
-define cuaw_574_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_574_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_574_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_574_pag {value cuaw_574_pag_base*sod_np_demand_frac}
+goal set_cuaw_574_pag {cuaw_574_pagDV = cuaw_574_pag}
 
 ! Determine April thru September total CUAW for DAU 212
 define cum_cuaw_574_pag {
     case aprthrusep {
         condition   month >= apr .and. month <= sep
-        sum(i=apr-month,12-month,1) (cuaw_574_pag(i)*cfs_TAF(i)) }
+        sum(i=apr-month,12-month,1) (cuaw_574_pag_base(i)*sod_np_demand_frac*cfs_TAF(i)) }
     case otherwise {
         condition   always
         value 0. }

@@ -221,7 +221,11 @@ goal limitL_FRSNO_3 {L_FRSNO < 3.*taf_cfs }
 */
 
 ! Retrieve predefined CUAW timeseries values for Madera ID demands
-define cuaw_592_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_592_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_592_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_592_pag {value cuaw_592_pag_base*sod_np_demand_frac}
+goal set_cuaw_592_pag {cuaw_592_pagDV = cuaw_592_pag}
 
 /*
 Percent of Madera ID deliveries that accounts for district loss; from lookup
@@ -294,7 +298,11 @@ goal set_GP591_MI_A {GP591_MI_A = D592_MI_A}
 */
 
 ! Retrieve predefined CUAW timeseries values for non-district, East of Madera
-define cuaw_592_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_592_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_592_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_592_ND {value cuaw_592_ND_base*sod_np_demand_frac}
+goal set_cuaw_592_ND {cuaw_592_NDDV = cuaw_592_ND}
 
 ! Deep percolation is assumed to be 25% of CUAW
 define dperc_592_ND {value cuaw_592_nd*.25}
@@ -472,7 +480,11 @@ goal limit1_L_CHOWR1 {L_CHOWR1 < min(4.2*taf_cfs,D_CHOWR1_limitb/2)}
 */
 
 ! Retrieve predefined CUAW timeseries values for Chowchilla ID demands
-define cuaw_584_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_584_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_584_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_584_pag {value cuaw_584_pag_base*sod_np_demand_frac}
+goal set_cuaw_584_pag {cuaw_584_pagDV = cuaw_584_pag}
 
 /*
 Percent of Chowchilla ID deliveries that accounts for district loss; from
@@ -536,7 +548,11 @@ goal set_GP583_MI_A {GP583_MI_A = D584_MI_A}
 */
 
 ! Retrieve predefined CUAW timeseries values for non-district, DAU 215
-define CUAW_586_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! COEQWAL: adding functionality to adjust SOD non-CVP/SWP demands
+define cuaw_586_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_586_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_586_ND {value cuaw_586_ND_base*sod_np_demand_frac}
+goal set_cuaw_586_ND {cuaw_586_NDDV = cuaw_586_ND}
 
 ! Decision variable for non-district returnable surface delivery losses
 define dloss_586_ND {std kind 'local-loss' units 'cfs'}

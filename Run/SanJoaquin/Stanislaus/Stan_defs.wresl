@@ -58,11 +58,26 @@ define NMforecast3DV {alias NMforecast3 kind 'forecast' units 'taf'}
 Divide allocation relative to the portion of demand on each side of the river
 */
 ! Consumptive use applied water Ag demand for Oakdale ID South
-define cuaw_531_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_531_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_531_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_531_pag {value cuaw_531_pag_base*sod_np_demand_frac}
+goal set_cuaw_531_pag {cuaw_531_pagDV = cuaw_531_pag}
+
 ! Consumptive use applied water for Oakdale ID project Ag
-define cuaw_523OID_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_523OID_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_523OID_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_523OID_pag {value cuaw_523OID_pag_base*sod_np_demand_frac}
+goal set_cuaw_523OID_pag {cuaw_523OID_pagDV = cuaw_523OID_pag}
+
 ! Consumptive use applied water for South San Joaquin ID project Ag
-define cuaw_523SSJ_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_523SSJ_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_523SSJ_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_523SSJ_pag {value cuaw_523SSJ_pag_base*sod_np_demand_frac}
+goal set_cuaw_523SSJ_pag {cuaw_523SSJ_pagDV = cuaw_523SSJ_pag}
+
 ! Define non district M & I demand of SSJID North
 define demand_D523_MI_A {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
 
@@ -124,14 +139,14 @@ define min522gw {value GP522_min_prv_limit + GP522_min_pag_limit}
 define ann_OID_S {
     case oct {
         condition month == oct
-        sum(i=0,11,1) max(0., cuaw_531_pag(i)/D531_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
-                       + max(0.,min(2. * taf_cfs(i), (cuaw_531_pag(i)/D531_pag_factor(i)-GP530_min_prv_limit(i)-GP530_min_pag_limit(i))) *cfs_taf(i))  !loss
-                       + min(spill_545b_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
-                       + min(spill_532_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
-                       + min(spill_534b_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
-                       + min(spill_STANRIPNa_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
-                       - min(GP530_min_prv_limit(i) * cfs_taf(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !min gw
-                       - min(GP530_min_pag_limit(i) * cfs_taf(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i)))  !min gw
+        sum(i=0,11,1) max(0., cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
+                       + max(0.,min(2. * taf_cfs(i), (cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i)-GP530_min_prv_limit(i)-GP530_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_545b_pag(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_532_pag(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_534b_pag(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_STANRIPNa_pag(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       - min(GP530_min_prv_limit(i) * cfs_taf(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i))  !min gw
+                       - min(GP530_min_pag_limit(i) * cfs_taf(i), cuaw_531_pag_base(i)*sod_np_demand_frac/D531_pag_factor(i) *cfs_taf(i)))  !min gw
                      }
     case otherwise {
         condition   always
@@ -142,12 +157,12 @@ define ann_OID_S {
 define ann_OID_N {
     case oct {
         condition month == oct
-        sum(i=0,11,1) max(0.,(cuaw_523OID_pag(i) / D523_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
-                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523OID_pag(i)/D523_pag_factor(i)-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
-                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523OID_pag(i)/D523_pag_factor(i)) *cfs_taf(i))  !spill
-                       + min(spill_526_pag(i)/2., (cuaw_523OID_pag(i)/D523_pag_factor(i)) *cfs_taf(i))  !spill
-                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag(i)/D523_pag_factor(i) *cfs_taf(i))  !min gw
-                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag(i)/D523_pag_factor(i) *cfs_taf(i))))  !min gw
+        sum(i=0,11,1) max(0.,(cuaw_523OID_pag_base(i)*sod_np_demand_frac / D523_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
+                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523OID_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523OID_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)) *cfs_taf(i))  !spill
+                       + min(spill_526_pag(i)/2., (cuaw_523OID_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)) *cfs_taf(i))  !spill
+                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i) *cfs_taf(i))  !min gw
+                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i) *cfs_taf(i))))  !min gw
                      }
     case otherwise {
         condition   always
@@ -157,12 +172,12 @@ define ann_OID_N {
 define ann_SSJ {
     case oct {
         condition month == oct
-        sum(i=0,11,1) max(0.,(cuaw_523SSJ_pag(i)/ D523_pag_factor(i)*1.1 *cfs_taf(i) + demand_D523_MI_A(i) * cfs_taf(i)
-                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
-                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
-                       + min(spill_526_pag(i)/2., (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
-                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1 *cfs_taf(i))  !min gw
-                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1 *cfs_taf(i))))  !min gw
+        sum(i=0,11,1) max(0.,(cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/ D523_pag_factor(i)*1.1 *cfs_taf(i) + demand_D523_MI_A(i) * cfs_taf(i)
+                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)*1.1-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
+                       + min(spill_526_pag(i)/2., (cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
+                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)*1.1 *cfs_taf(i))  !min gw
+                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag_base(i)*sod_np_demand_frac/D523_pag_factor(i)*1.1 *cfs_taf(i))))  !min gw
                        }
     case otherwise {
         condition   always
@@ -236,16 +251,16 @@ define OIDcut_N {
         value 0.0}
     case June {
         condition month==JUN
-        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag+cuaw_523OID_pag(1)+cuaw_523OID_pag(2)+cuaw_523OID_pag(3))}
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag+cuaw_523OID_pag_base(1)*sod_np_demand_frac+cuaw_523OID_pag_base(2)*sod_np_demand_frac+cuaw_523OID_pag_base(3)*sod_np_demand_frac)}
     case July {
         condition month==JUL
-        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-1)+cuaw_523OID_pag+cuaw_523OID_pag(1)+cuaw_523OID_pag(2))}
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pagDV(-1)+cuaw_523OID_pag+cuaw_523OID_pag_base(1)*sod_np_demand_frac+cuaw_523OID_pag_base(2)*sod_np_demand_frac)}
     case August {
         condition month==AUG
-        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-2)+cuaw_523OID_pag(-1)+cuaw_523OID_pag+cuaw_523OID_pag(1))}
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pagDV(-2)+cuaw_523OID_pagDV(-1)+cuaw_523OID_pag+cuaw_523OID_pag_base(1)*sod_np_demand_frac)}
     case September {
         condition month==SEP
-        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-3)+cuaw_523OID_pag(-2)+cuaw_523OID_pag(-1)+cuaw_523OID_pag)}
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pagDV(-3)+cuaw_523OID_pagDV(-2)+cuaw_523OID_pagDV(-1)+cuaw_523OID_pag)}
     case otherwise {
         condition always
         value 0.0}
@@ -257,16 +272,16 @@ define SSJIDcut {
         value 0.0}
     case June {
         condition month==JUN
-        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag+cuaw_523SSJ_pag(1)+cuaw_523SSJ_pag(2)+cuaw_523SSJ_pag(3))}
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag+cuaw_523SSJ_pag_base(1)*sod_np_demand_frac+cuaw_523SSJ_pag_base(2)*sod_np_demand_frac+cuaw_523SSJ_pag_base(3)*sod_np_demand_frac)}
     case July {
         condition month==JUL
-        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag(1)+cuaw_523SSJ_pag(2))}
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pagDV(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag_base(1)*sod_np_demand_frac+cuaw_523SSJ_pag_base(2)*sod_np_demand_frac)}
     case August {
         condition month==AUG
-        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-2)+cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag(1))}
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pagDV(-2)+cuaw_523SSJ_pagDV(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag_base(1)*sod_np_demand_frac)}
     case September {
         condition month==SEP
-        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-3)+cuaw_523SSJ_pag(-2)+cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag)}
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pagDV(-3)+cuaw_523SSJ_pagDV(-2)+cuaw_523SSJ_pagDV(-1)+cuaw_523SSJ_pag)}
     case otherwise {
         condition always
         value 0.0}
@@ -278,16 +293,16 @@ define OIDcut_S {
         value 0.0}
     case June {
         condition month==JUN
-        value OIDred_S * cuaw_531_pag/(cuaw_531_pag+cuaw_531_pag(1)+cuaw_531_pag(2)+cuaw_531_pag(3))}
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pag+cuaw_531_pag_base(1)*sod_np_demand_frac+cuaw_531_pag_base(2)*sod_np_demand_frac+cuaw_531_pag_base(3)*sod_np_demand_frac)}
     case July {
         condition month==JUL
-        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-1)+cuaw_531_pag+cuaw_531_pag(1)+cuaw_531_pag(2))}
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pagDV(-1)+cuaw_531_pag+cuaw_531_pag_base(1)*sod_np_demand_frac+cuaw_531_pag_base(2)*sod_np_demand_frac)}
     case August {
         condition month==AUG
-        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-2)+cuaw_531_pag(-1)+cuaw_531_pag+cuaw_531_pag(1))}
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pagDV(-2)+cuaw_531_pagDV(-1)+cuaw_531_pag+cuaw_531_pag_base(1)*sod_np_demand_frac)}
     case September {
         condition month==SEP
-        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-3)+cuaw_531_pag(-2)+cuaw_531_pag(-1)+cuaw_531_pag)}
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pagDV(-3)+cuaw_531_pagDV(-2)+cuaw_531_pagDV(-1)+cuaw_531_pag)}
     case otherwise {
         condition always
         value 0.0}

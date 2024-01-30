@@ -38,7 +38,7 @@ goal continuity521 {c75-d521=0} !
 goal continuity522 {GP522+D521-C522=0} !
 goal continuity523 {C522-R_STANRIPNB-D523-R526=0} !
 goal continuity528 {C_STANGDWN+I_STANRIPN+R_STANRIPNA+R_STANRIPNB+R_STANRIPNC-C_STANRIPN-D_STANRIPN=0} !Rippon
-goal continuity528A {D_STANRIPN+GP528ATS-D_STANRIPNA_riv-R_SJRSTANC=0} !Stanislaus Riparian Diversions
+goal continuity528A {D_STANRIPN+GP528ATS-D_STANRIPNA_riv-R_SJRSTANC+AD_STANRIPN2=0} !Stanislaus Riparian Diversions
 goal continuity530 {GP530+D_STANGDWNC-C530-D530_VAMP=0} !Oakdale South and DAU 207 Non-Dist Supply
 goal continuity531 {C530-D531-R_TUOLB-R532-R534B-R_STANRIPNA=0} !Delivery to Oakdale South
 goal continuity81 {I_PEDRO-C_PEDRO-F81-E_PEDRO=S_PEDRO*taf_cfs-S_PEDRO(-1)*taf_cfs} !New Don Pedro Reservoir
@@ -57,7 +57,7 @@ goal continuity550 {R550A+R550B+D_SJRMERA+GP550-C550=0} !Supply to Lands West of
 goal continuity551 {C550-D551-R_SJRTUOLK=0} !Delivs to Lands West of Turlock
 goal continuity20 {I_MCLRE-C_MCLRE-F20-E_MCLRE=S_MCLRE*taf_cfs-S_MCLRE(-1)*taf_cfs} !Lake McClure
 
-goal continuityMERCED1 {I_MERCED1C+I_MERCED1B+C_MCLRE-D_MERCED1C-D_MERCED1B-C_MERCED1=0} !Merced River Calsim nodes 561 and 562 combined
+goal continuityMERCED1 {I_MERCED1C+I_MERCED1B+C_MCLRE-D_MERCED1C-D_MERCED1B-C_MERCED1+AD_MERCED1=0} !Merced River Calsim nodes 561 and 562 combined
 goal continuity562A {D_MERCED1B-D_MERCED1A_riv-R_MERCED2A=0} !
 goal continuityMERCED2 {I_MERCED2+C_MERCED1-C_MERCED2-D_MERCED2+AD_MERCED2=0.} !Merced River Calsim nodes 564 and 566 combined
 

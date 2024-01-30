@@ -105,7 +105,11 @@ goal setNDP_WSdv {NDP_WSdv = NDP_WS}
 */
 
 ! Retrieve predefined CUAW timeseries values for SJR demand node 545A
-define cuaw_545A_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_545A_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_545A_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_545A_pag {value cuaw_545A_pag_base*sod_np_demand_frac}
+goal set_cuaw_545A_pag {cuaw_545A_pagDV = cuaw_545A_pag}
 
 ! Decision variable defining 545A return flow of district losses
 define dloss_545A_pag {std kind 'local-loss' units 'cfs'}
@@ -150,7 +154,11 @@ goal set_GP545A_MI_A {GP545A_MI_A = D_TUOLC_A_MI_A}
 */
 
 ! Retrieve predefined CUAW timeseries values for Turlock non-district demands
-define cuaw_549_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_549_ND_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_549_NDDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_549_ND {value cuaw_549_ND_base*sod_np_demand_frac}
+goal set_cuaw_549_ND {cuaw_549_NDDV = cuaw_549_ND}
 
 ! Define deep percolation as 30% of CUAW (assumed value)
 define dperc_549_ND {value cuaw_549_ND * .3}
@@ -185,7 +193,11 @@ goal set_GP548_MI_A {GP548_MI_A = D549_MI_A}
 */
 
 ! Retrieve predefined CUAW timeseries values for Turlock ID demands
-define cuaw_549_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_549_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_549_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_549_pag {value cuaw_549_pag_base*sod_np_demand_frac}
+goal set_cuaw_549_pag {cuaw_549_pagDV = cuaw_549_pag}
 
 /*
 Factor accounting for all other applied water requirements in excess of CUAW
@@ -392,7 +404,11 @@ goal set_R_SJRTUOLL {
 */
 
 ! Retrieve predefined CUAW timeseries values for demand node 551
-define cuaw_551_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_551_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_551_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_551_pag {value cuaw_551_pag_base*sod_np_demand_frac}
+goal set_cuaw_551_pag {cuaw_551_pagDV = cuaw_551_pag}
 
 ! Deep percolation assumed to be 30% of CUAW
 define dperc_551_pag {value cuaw_551_pag * .3}
@@ -514,7 +530,11 @@ goal set_R550b {R550b = D533_MI_A * 0.}
 */
 
 ! Retrieve predefined CUAW timeseries values for Modesto ID
-define cuaw_533_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_533_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_533_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_533_pag {value cuaw_533_pag_base*sod_np_demand_frac}
+goal set_cuaw_533_pag {cuaw_533_pagDV = cuaw_533_pag}
 
 /*
 Factor accounting for all other applied water requirements in excess of CUAW
@@ -741,7 +761,11 @@ goal set_R534a {
 */
 
 ! Retrieve predefined CUAW timeseries values for non-district demand node 535
-define cuaw_535_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! coeqwal: adjusting SOD non-CVP/SWP demands
+define cuaw_535_pag_base {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+define cuaw_535_pagDV {std kind 'sjr-demand' units 'cfs'}
+define cuaw_535_pag {value cuaw_535_pag_base*sod_np_demand_frac}
+goal set_cuaw_535_pag {cuaw_535_pagDV = cuaw_535_pag}
 
 ! Decision variable defining 535 return flow of non-district losses
 define dloss_535_pag {std kind 'local-loss' units 'cfs'}

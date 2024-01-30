@@ -44,6 +44,7 @@ define D514B {timeseries kind 'FLOW-DELIVERY' units 'CFS'} !DWSP Diversion M&I
 goal setADSJRCalALL { AD_SJRCalALL = C_CALAV + AD_SJRCAL  -D514A - D514B}
 
 define AD_STANRIPN {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_STANRIPN2 {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'} !COEQWAL: accomodating changes in non-project demands 
 goal setADSTANRIPN { AD_STANRIPN = R_STANRIPNA + R_STANRIPNB + R_STANRIPNC }
                                  
 define AD_CHOW2 {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
@@ -70,4 +71,19 @@ goal setADSJRSAND { AD_SJRSAND = - L_SJRSAND }
 define AD_FRSNO {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
 goal setADFRSNO { AD_FRSNO = D590F - L_FRSNO }
 
+
+define AD_MERCED1 {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_MERCED1{
+	lhs AD_MERCED1
+	rhs 0
+	lhs>rhs penalty 10000
+	lhs<rhs penalty 10000
+}
+
+goal setAD_STANRIPN2{
+	lhs AD_STANRIPN2
+	rhs 0
+	lhs>rhs penalty 10000
+	lhs<rhs penalty 10000
+}
 
