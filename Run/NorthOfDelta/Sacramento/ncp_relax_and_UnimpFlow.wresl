@@ -67,15 +67,15 @@ define minflowUnimp_C_Wilkns {std kind 'flow-min-unimp' units 'cfs'}
 goal set_minflowUnimp_C_Wilkns {minflowUnimp_C_Wilkns = ncp_unimp_fraction*UNIMP_SRBB_CFS}
 
 goal set_totminncp {
-	lhs C_WILKNS_MIF + C_WILKNS_MIF_DAILY
+	lhs C_WILKNS_MIF !+ C_WILKNS_MIF_DAILY
 	case just_ncp {
 		condition wilkins_mif_option < 0.5
-		rhs minflowNCP_C_Wilkns 
-		lhs<rhs penalty 5}
+		rhs minflowNCP_C_Wilkns }
+		!lhs<rhs penalty 5}
 	case just_unimp {
 		condition wilkins_mif_option < 1.5
 		rhs minflowUnimp_C_Wilkns 
-		lhs<rhs penalty 5}
+		lhs<rhs penalty 5500}
 	case unimp_and_ncp {
 		condition wilkins_mif_option < 2.5
 		rhs max(ncp_unimp_fraction*UNIMP_SRBB_CFS, ncp_relax_final) 
