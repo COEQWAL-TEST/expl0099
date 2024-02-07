@@ -27,18 +27,18 @@ initial {
 	svar LVEM_switch	 {select Option from GUI_LosVaqueros where Index = 1}
 	svar AllocationSwitch   {select Option from GUI_Operations where Index=5} !Allocation method
 	
-	svar cvpag_demand_ratio_n {value 1.0}
-	svar cvprf_demand_ratio_n {value 1.0}
-	svar cvpsc_demand_ratio {value 1.0}
-	svar cvpex_demand_ratio {value 1.0}
-	svar cvpmi_demand_ratio_n {value 1.0}
-	svar delta_demand_frac {value 1.0} 
-	svar sod_np_demand_frac {value 1.0}
+	svar cvpag_demand_ratio_n {value 0.9}
+	svar cvprf_demand_ratio_n {value 0.9}
+	svar cvpsc_demand_ratio {value 0.9}
+	svar cvpex_demand_ratio {value 0.9}
+	svar cvpmi_demand_ratio_n {value 0.9}
+	svar delta_demand_frac {value 0.9 } !<-- value of 1 gives full delta demands; values <1 reduce demands
+	svar sod_np_demand_frac {value 0.9} !<-- reduce non-project/non-district demands SOD
 	
 	svar cvp_priority_alt {value 0} !<-- 0: baseline cuts priorities; 1: equal to all contracts
 	svar CVPdemandswitch   {select Option from GUI_SODdemand where Index = 5} ! {value 1} !<--: moved here from Options_Switches.wresl
 	svar CVPdemandswitchSV {value int(CVPdemandswitch)}
-	
+			
 	! Setting minimum flow options, by tributary
 	! (these settings replace variables in trib-specific files)
 	!
@@ -46,26 +46,26 @@ initial {
 	!  values >0 set the minflow requirement at increasing fractions of the unimpaired
 	!  flow on the tributary
 	
-	svar wilkins_mif_option {value 0} ! switch for MIF scenario: 0: just ncp, 1: unimpaired flow; 2: both
-	svar ncp_unimp_fraction {value 0.0} ! fraction of unimpaired flow to assign at Wilkins Slough
+	svar wilkins_mif_option {value 1} ! switch for MIF scenario: 0: just ncp, 1: unimpaired flow; 2: both
+	svar ncp_unimp_fraction {value 0.8} ! fraction of unimpaired flow to assign at Wilkins Slough
 	
-	svar yubfea_mif_option {value 0} ! switch for MIF scenario: 0: just baseline, 1: unimpaired flow; 2: both
-	svar yubfea_unimp_fraction {value 0.0}  !<-- fraction of combined Feather (Oroville) and Yuba unimpaired flow at mouth of Feather
+	svar yubfea_mif_option {value 1} ! switch for MIF scenario: 0: just baseline, 1: unimpaired flow; 2: both
+	svar yubfea_unimp_fraction {value 0.8}  !<-- fraction of combined Feather (Oroville) and Yuba unimpaired flow at mouth of Feather
 	
-	svar amer_mif_option {value 0}
-	svar amer_unimp_fraction {value 0.0}
+	svar amer_mif_option {value 1}
+	svar amer_unimp_fraction {value 0.8}
 	
-	svar stan_mif_option {value 0}
-	svar stan_unimp_fraction {value 0.0}
+	svar stan_mif_option {value 1}
+	svar stan_unimp_fraction {value 0.8}
 	
-	svar tuol_mif_option {value 0}
-	svar tuol_unimp_fraction {value 0.0}
+	svar tuol_mif_option {value 1}
+	svar tuol_unimp_fraction {value 0.8}
 	
-	svar merc_mif_option {value 0}
-	svar merc_unimp_fraction {value 0.0}
+	svar merc_mif_option {value 1}
+	svar merc_unimp_fraction {value 0.8}
 	
-	svar sjr_mif_option {value 0} 
-	svar sjr_unimp_fraction {value 0.0}
+	svar sjr_mif_option {value 1} 
+	svar sjr_unimp_fraction {value 0.8}
 }
 
 SEQUENCE CYCLE1 {

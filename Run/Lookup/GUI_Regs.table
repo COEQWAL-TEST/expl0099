@@ -1,3 +1,5 @@
+! This file modified as part of an automated process: 2024-01-31 jmg-ucsc
+!
 ! Delta Regulation Switches
 ! ===========================================
 ! 10/19/2010 created by Z.Q. Richard Chen DWR
@@ -23,8 +25,8 @@
 GUI_Regs
 Index	Option
 1	1	!DCC_DLTSW -  Delta Cross Channel
-2	1	!EI_DLTSW -  Export-Inflow Ratio
-3	1	!NDO_DLTSW -  Minimum Net Delta Outflow
+2   1	!EI_DLTSW -  Export-Inflow Ratio
+3   1	!NDO_DLTSW -  Minimum Net Delta Outflow
 4	1	!RV_DLTSW -  Sacramento River at Rio Vista Minimum Flow
 5	1	!X2_DLTSW -  X2 Requirements
 6	1	!X2ROE_DLTSW -  Roe Trigger
